@@ -8,7 +8,21 @@ angular.module('starter.controllers', [])
 
 })
 .controller('SignUpCtrl', function($scope) {})
-.controller('EventsCtrl', function($scope) {})
+.controller('EventsCtrl', function($rootScope, API, $scope) {
+  $rootScope.$on('fetchAll', function() {
+    API.getAll().success(function(data, status, headers, config){
+      $scope.events = data;
+      console.log(data);
+    });
+  });
+
+  $scope.fetch = function() {
+    API.getAll().success(function(data, status, headers, config){
+      $scope.events = data;
+      console.log(data);
+    });
+  };
+})
 .controller('EventsDetailCtrl', function($scope) {})
 .controller('MyListCtrl', function($scope) {})
 .controller('MyListDetailCtrl', function($scope) {})

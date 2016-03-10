@@ -49,49 +49,49 @@ angular.module('starter.services', [])
   }
 
   return {
-    signin: function (form) {
-      return $http.post(base+'/api/v1/angelsource/auth/login', form);
-    },
-    signup: function (form) {
-      return $http.post(base+'/api/v1/angelsource/auth/register', form);
-    },
+    // signin: function (form) {
+    //   return $http.post(base+'/api/v1/angelsource/auth/login', form);
+    // },
+    // signup: function (form) {
+    //   return $http.post(base+'/api/v1/angelsource/auth/register', form);
+    // },
     getAll: function (email) {
-      return $http.get(base+'/api/v1/angelsource/data/list', {
+      return $http.get(base+'/events', {
         method: 'GET',
         params: {
           token: email
         }
       });
     },
-    getOne: function (id, email) {
-      return $http.get(base+'/api/v1/angelsource/data/item/' + id, {
+    getOne: function (id) {
+      return $http.get(base+'/event/' + id, {
         method: 'GET',
         params: {
-          token: email
+          // token: email
         }
       });
     },
-    saveItem: function (form, email) {
-      return $http.post(base+'/api/v1/angelsource/data/itm', form, {
+    saveItem: function (form) {
+      return $http.post(base+'/events', form, {
         method: 'POST',
         params: {
-          token: email
+          // token: email
         }
       });
     },
-    putItem: function (id, form, email) {
-      return $http.put(base+'/api/v1/angelsource/data/item/' + id, form, {
+    putItem: function (id) {
+      return $http.put(base+'/event/' + id, {
         method: 'PUT',
         params: {
-          token: email
+          // token: email
         }
       });
     },
-    deleteItem: function (id, email) {
-      return $http.delete(base+'/api/v1/angelsource/data/item/' + id, {
+    deleteItem: function (id) {
+      return $http.delete(base+'/event/' + id, {
         method: 'DELETE',
         params: {
-          token: email
+          // token: email
         }
       });
     }
