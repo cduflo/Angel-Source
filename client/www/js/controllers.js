@@ -8,23 +8,50 @@ angular.module('starter.controllers', [])
 
 })
 .controller('SignUpCtrl', function($scope) {})
-.controller('EventsCtrl', function($rootScope, API, $scope) {
-  $rootScope.$on('fetchAll', function() {
-    API.getAll().success(function(data, status, headers, config){
-      $scope.events = data;
-      console.log(data);
-    });
+.controller('EventsCtrl', function($rootScope, $state, $stateParams, API, $scope) {
+  // $rootScope.$on('fetchAll', function() {
+  //   API.getAll().success(function(data, status, headers, config){
+  //     $scope.events = data;
+  //     console.log(data);
+  //   });
+  // });
+  //
+  // $scope.fetch = function() {
+  //   API.getAllEvents().success(function(data, status, headers, config){
+  //     $scope.events = data;
+  //     console.log(data);
+  //   });
+  // };
+
+  API.getAllEvents().success(function(data, status, headers, config){
+    $scope.events = data;
+    console.log(data);
   });
 
-  $scope.fetch = function() {
-    API.getAll().success(function(data, status, headers, config){
-      $scope.events = data;
+  $scope.selection = function(choice) {
+    $state.go('tab.events-detail', { myParam: { selection: choice } })
+  }
+})
+.controller('EventsDetailCtrl', function($scope,API, $stateParams) {
+    var activate = function () {
+    $scope.selection = $stateParams.myParam.selection;
+  }
+  activate();
+
+  $scope.saveToMyList = function (choice) {
+    console.log("ive been clicked");
+    API.saveMyList(choice).success(function(data, status, headers, config){
       console.log(data);
     });
-  };
+  }
+
 })
-.controller('EventsDetailCtrl', function($scope) {})
-.controller('MyListCtrl', function($scope) {})
+.controller('MyListCtrl', function($scope, API) {
+  API.getAllMyList().success(function(data, status, headers, config){
+    $scope.events = data;
+    console.log(data);
+  });
+})
 .controller('MyListDetailCtrl', function($scope) {})
 
 .controller('AccountCtrl', function($scope) {

@@ -55,7 +55,7 @@ angular.module('starter.services', [])
     // signup: function (form) {
     //   return $http.post(base+'/api/v1/angelsource/auth/register', form);
     // },
-    getAll: function (email) {
+    getAllEvents: function (email) {
       return $http.get(base+'/events', {
         method: 'GET',
         params: {
@@ -63,7 +63,7 @@ angular.module('starter.services', [])
         }
       });
     },
-    getOne: function (id) {
+    getOneEvent: function (id) {
       return $http.get(base+'/event/' + id, {
         method: 'GET',
         params: {
@@ -71,7 +71,7 @@ angular.module('starter.services', [])
         }
       });
     },
-    saveItem: function (form) {
+    saveEvents: function (form) {
       return $http.post(base+'/events', form, {
         method: 'POST',
         params: {
@@ -79,7 +79,7 @@ angular.module('starter.services', [])
         }
       });
     },
-    putItem: function (id) {
+    putEvent: function (id) {
       return $http.put(base+'/event/' + id, {
         method: 'PUT',
         params: {
@@ -87,8 +87,48 @@ angular.module('starter.services', [])
         }
       });
     },
-    deleteItem: function (id) {
+    deleteEvent: function (id) {
       return $http.delete(base+'/event/' + id, {
+        method: 'DELETE',
+        params: {
+          // token: email
+        }
+      });
+    },
+    getAllMyList: function (email) {
+      return $http.get(base+'/mylist', {
+        method: 'GET',
+        params: {
+          token: email
+        }
+      });
+    },
+    getOneMyList: function (id) {
+      return $http.get(base+'/mylist/' + id, {
+        method: 'GET',
+        params: {
+          // token: email
+        }
+      });
+    },
+    saveMyList: function (form) {
+      return $http.post(base+'/mylist', form, {
+        method: 'POST',
+        params: {
+          // token: email
+        }
+      });
+    },
+    putMyList: function (id) {
+      return $http.put(base+'/mylist/' + id, {
+        method: 'PUT',
+        params: {
+          // token: email
+        }
+      });
+    },
+    deleteMyList: function (id) {
+      return $http.delete(base+'/mylist/' + id, {
         method: 'DELETE',
         params: {
           // token: email

@@ -1,9 +1,12 @@
 <ion-view view-title="Events">
   <ion-content class="padding">
-    <h2>Welcome to Ionic</h2>
-    <p>
+    <!-- <p>
        <a ui-sref="tab.events-detail">Event Details</a>
-    </p>
-    <button ng-click="fetch()">click me</button>
+    </p> -->
+    <ion-list>
+      <ion-item ng-repeat="event in events" ng-click="selection(event)">
+        <p>{{event.name}}</p>
+      </ion-item>
+    </ion-list>
   </ion-content>
 </ion-view>

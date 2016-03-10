@@ -11,5 +11,13 @@
       <!-- {{chat.lastText}} -->
       This is event details
     </p>
+
+    <ion-list>
+      <ion-item ng-model="selection">
+        <p>{{selection.name}}</p>
+      </ion-item>
+    </ion-list>
+    <input type="button" value="Save to My List" ng-click"saveToMyList(selection)"/>
+    <a ng-click="saveToMyList(selection)">save</a>
   </ion-content>
 </ion-view>
