@@ -1,4 +1,63 @@
 angular.module('starter.services', [])
+// .factory('$volunteer', ['$window', '$http', function($window, $http) {
+//   var req = {
+//    method: 'GET',
+//    url: 'http://volunteermatch.org/api/call',
+//    headers: {
+//   "X-WSSE": wsseCredentials,
+//   "Authorization": "WSSE profile=\"UsernameToken\""
+// },
+//    data: { action: "searchOpportunities",
+//             query: {
+//     "location": "mountain view, ca"
+//           }}
+//   }
+//
+//   return {
+//     doApiCall: function() {
+//       $http(req).then(function(data, status, headers, config) {
+//         console.log(data)
+//       });
+//     }
+//   }
+// }])
+.factory('$network', ['$window', '$http', function($window, $http) {
+  return {
+    getIP: function() {
+      $http.get('http://ipv4.myexternalip.com/json').
+      success(function(data, status, headers, config) {
+      $window.localStorage['user.ip'] = data.ip;
+          $http.get('http://freegeoip.net/json/'+ data.ip).
+          success(function(loc,status,headers,config) {
+            $window.localStorage['user.Zip'] = loc.zip_code;
+            // loc.latitude, loc.longitude available if Maps integration
+          }).
+          error(function(x, status, headers, config){
+            console.log("Error with IP to Zip lookup");
+          });
+      }).
+      error(function(data, status, headers, config) {
+      console.log("Error with fetching IP");
+      });
+    }
+  }
+}])
+.factory('$localstorage', ['$window', function($window) {
+  return {
+    set: function(key, value) {
+      $window.localStorage[key] = value;
+    },
+    get: function(key, defaultValue) {
+      return $window.localStorage[key] || defaultValue;
+    },
+    setObject: function(key, value) {
+      $window.localStorage[key] = JSON.stringify(value);
+    },
+    getObject: function(key) {
+      return JSON.parse($window.localStorage[key] || '{}');
+    }
+  }
+}])
 .factory('API', function ($rootScope, $http, $ionicLoading, $window) {
   var base = "http://localhost:9804";
   $rootScope.show = function (text) {
@@ -96,10 +155,10 @@ angular.module('starter.services', [])
       });
     },
     getAllMyList: function (email) {
-      return $http.get(base+'/mylist', {
+      return $http.get(base+'/mylist/' + email, {
         method: 'GET',
         params: {
-          token: email
+          email: email
         }
       });
     },
@@ -111,8 +170,8 @@ angular.module('starter.services', [])
         }
       });
     },
-    saveMyList: function (form) {
-      return $http.post(base+'/mylist', form, {
+    saveMyList: function (form, email) {
+      return $http.post(base+'/mylist/' + email, form, {
         method: 'POST',
         params: {
           // token: email

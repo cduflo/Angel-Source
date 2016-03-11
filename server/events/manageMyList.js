@@ -2,9 +2,11 @@ module.exports = function (server, db) {
 	// var validateRequest = require("../auth/validateRequest");
 
 	//GET ALL
-	server.get('/mylist', function (req, res, next) {
+	server.get('/mylist/:email', function (req, res, next) {
 		// validateRequest.validate(req,res,db, function() {
-			db.mylist.find(function (err, mylist){
+			db.mylist.find({
+				email: req.params.email
+			}, function (err, mylist){
 				res.writeHead(200, {
 					'Content-Type': 'application/json; charset=utf-8'
 				});
@@ -30,7 +32,7 @@ module.exports = function (server, db) {
 	});
 
 	//POST
-	server.post('/mylist', function (req, res, next) {
+	server.post('/mylist/:email', function (req, res, next) {
 		// validateRequest.validate(req,res,db, function() {
 			var mylist = req.params;
 			db.mylist.save(mylist,
@@ -76,10 +78,10 @@ module.exports = function (server, db) {
 	});
 
 	//DELETE
-	server.del('/mylist/:id', function (req, res, next) {
+	server.del('/mylist/:_id', function (req, res, next) {
 		// validateRequest.validate(req,res,db, function() {
 			db.mylist.remove({
-				id: req.params.id
+				_id: req.params._id
 			}, function (err, data) {
 				res.writeHead(200, {
 					'Content-Type': 'applicaiton/json; charset=utf-8'
