@@ -60,13 +60,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     .state('tab', {
     url: '/tab',
     abstract: true,
-    templateUrl: 'templates/tabs.html'
+    templateUrl: 'templates/tabs.html',
+    controller: 'TabsCtrl'
   })
 
   // Each tab has its own nav history stack:
 
       .state('tab.events', {
-        cashe:false,
+        cache:false,
         params: {myParam: null},
         url: '/events',
         views: {
@@ -88,7 +89,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   })
 
   .state('tab.mylist', {
-      cashe:false,
+      cache:false,
+      params: {myParam: null},
       url: '/mylist',
       views: {
         'tab-mylist': {
@@ -98,6 +100,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
     .state('tab.mylist-detail', {
+      params: {myParam: null},
       url: '/mylist/placeholder', //EventId
       views: {
         'tab-mylist': {

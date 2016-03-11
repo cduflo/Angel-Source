@@ -1,13 +1,5 @@
 <ion-view view-title="My List">
   <ion-content class="padding">
-    <h2>Welcome to My LIOst</h2>
-    <p>
-      MY LIST YO
-    </p>
-
-    <p>
-       <a ui-sref="tab.mylist-detail">Event Details</a>
-    </p>
     <ion-list>
       <ion-item ng-repeat="event in events" ng-click="selection(event)">
         <p>{{event.name}}</p>

@@ -8,20 +8,13 @@ angular.module('starter.controllers', [])
 
 })
 .controller('SignUpCtrl', function($scope) {})
+.controller('TabsCtrl', function ($scope, $state){
+  $scope.goTo= function(state){
+    $state.go(state);
+  }
+
+})
 .controller('EventsCtrl', function($rootScope, $state, $stateParams, API, $scope) {
-  // $rootScope.$on('fetchAll', function() {
-  //   API.getAll().success(function(data, status, headers, config){
-  //     $scope.events = data;
-  //     console.log(data);
-  //   });
-  // });
-  //
-  // $scope.fetch = function() {
-  //   API.getAllEvents().success(function(data, status, headers, config){
-  //     $scope.events = data;
-  //     console.log(data);
-  //   });
-  // };
 
   API.getAllEvents().success(function(data, status, headers, config){
     $scope.events = data;
@@ -46,13 +39,29 @@ angular.module('starter.controllers', [])
   }
 
 })
-.controller('MyListCtrl', function($scope, API) {
+.controller('MyListCtrl', function($scope, $state, API) {
   API.getAllMyList().success(function(data, status, headers, config){
     $scope.events = data;
     console.log(data);
   });
+
+  $scope.selection = function(choice) {
+    $state.go('tab.mylist-detail', { myParam: { selection: choice } })
+  }
 })
-.controller('MyListDetailCtrl', function($scope) {})
+.controller('MyListDetailCtrl', function($scope, API, $stateParams) {
+  var activate = function () {
+  $scope.selection = $stateParams.myParam.selection;
+  }
+  activate();
+
+$scope.deleteFromMyList = function (choice) {
+  console.log("i've been clicked!");
+  API.deleteMyList(choice.id).success(function(data, status, headers, config){
+    console.log(data);
+  });
+}
+})
 
 .controller('AccountCtrl', function($scope) {
   $scope.settings = {

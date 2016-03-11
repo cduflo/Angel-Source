@@ -5,11 +5,11 @@
   The Friends service returns an array of friend data
 -->
 <ion-view view-title="Event Detail">
-  <ion-content class="padding">
+  <ion-content class="padding" ng-model="selection">
     <!-- <img ng-src="{{chat.face}}" style="width: 64px; height: 64px"> -->
-    <p>
-      <!-- {{chat.lastText}} -->
-      This is my list - event details
-    </p>
+        <h2>{{selection.name}}</h2>
+        <p>{{selection.description}}</p>
+
+    <button type="input" ng-click="deleteFromMyList(selection)">Delete from <strong>My List</strong></button>
   </ion-content>
 </ion-view>
