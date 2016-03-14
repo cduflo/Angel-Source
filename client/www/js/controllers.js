@@ -115,4 +115,6 @@ $scope.deleteFromMyList = function (choice) {
   //   enableFriends: true
   // };
   $scope.userzip = $localstorage.get('user.Zip');
+  $scope.radius = 10;
+  $scope.timeframe = "this_week";
 });
