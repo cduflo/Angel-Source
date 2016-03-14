@@ -1,26 +1,25 @@
 angular.module('starter.services', [])
-// .factory('$volunteer', ['$window', '$http', function($window, $http) {
-//   var req = {
-//    method: 'GET',
-//    url: 'http://volunteermatch.org/api/call',
-//    headers: {
-//   "X-WSSE": wsseCredentials,
-//   "Authorization": "WSSE profile=\"UsernameToken\""
-// },
-//    data: { action: "searchOpportunities",
-//             query: {
-//     "location": "mountain view, ca"
-//           }}
-//   }
-//
+.factory('$volunteer', function($http) {
+    return {
+    getEvents: function (loc, dist) {
+      return $http.get('http://api2.allforgood.org/api/volopps?key=OriginCode&vol_loc='+loc+'&vol_dist='+dist+'&output=json', {
+        method: 'GET'
+      });
+    }
 //   return {
-//     doApiCall: function() {
-//       $http(req).then(function(data, status, headers, config) {
-//         console.log(data)
+//     getEvents: function(loc, dist) {
+//       $http.get('http://api2.allforgood.org/api/volopps?key=OriginCode&vol_loc='+loc+'&vol_dist='+dist+'&output=json').
+//       success(function(data, status, headers, config) {
+//            console.log(data.items);
+//       return(data.items);
+
+//       }).
+//       error(function(data, status, headers, config) {
+//       console.log("Error with fetching volunteer activities");
 //       });
 //     }
 //   }
-// }])
+}})
 .factory('$network', ['$window', '$http', function($window, $http) {
   return {
     getIP: function() {
@@ -190,7 +189,7 @@ angular.module('starter.services', [])
       return $http.delete(base+'/mylist/' + id, {
         method: 'DELETE',
         params: {
-          // token: email
+          id : id
         }
       });
     }

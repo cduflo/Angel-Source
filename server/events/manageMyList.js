@@ -46,40 +46,41 @@ module.exports = function (server, db) {
 		return next();
 	});
 
-	//PUT
-	server.put('/mylist/:id', function (req, res, next){
-		// validateRequest.validate(req,res,db, function() {
-			//get existing product
-			db.mylist.findOne({
-				id: req.params.id
-			}, function (err, data){
-				//merge req.params/mylist with the server/mylist
-				var updmylist = {};  //updated mylist
-				//logic similar to jQuery.extend9); to merge 2 objects
-				for (var n in data) {
-					updmylist[n] = data[n];
-				}
-				for (var n in req.params) {
-					updmylist[n] = req.params[n];
-				}
-				db.mylist.update({
-					id: req.params.id
-				}, updmylist, {
-					multi: false
-				}, function (err, data) {
-					res.writeHead(200, {
-						'Content-Type': 'application/json; charset=utf-8'
-					});
-					res.end(JSON.stringify(data));
-				});
-			});
-		// });
-		return next();
-	});
+	// //PUT
+	// server.put('/mylist/:id', function (req, res, next){
+	// 	// validateRequest.validate(req,res,db, function() {
+	// 		//get existing product
+	// 		db.mylist.findOne({
+	// 			id: req.params.id
+	// 		}, function (err, data){
+	// 			//merge req.params/mylist with the server/mylist
+	// 			var updmylist = {};  //updated mylist
+	// 			//logic similar to jQuery.extend9); to merge 2 objects
+	// 			for (var n in data) {
+	// 				updmylist[n] = data[n];
+	// 			}
+	// 			for (var n in req.params) {
+	// 				updmylist[n] = req.params[n];
+	// 			}
+	// 			db.mylist.update({
+	// 				id: req.params.id
+	// 			}, updmylist, {
+	// 				multi: false
+	// 			}, function (err, data) {
+	// 				res.writeHead(200, {
+	// 					'Content-Type': 'application/json; charset=utf-8'
+	// 				});
+	// 				res.end(JSON.stringify(data));
+	// 			});
+	// 		});
+	// 	// });
+	// 	return next();
+	// });
 
 	//DELETE
 	server.del('/mylist/:_id', function (req, res, next) {
 		// validateRequest.validate(req,res,db, function() {
+            console.log(req.params);
 			db.mylist.remove({
 				_id: req.params._id
 			}, function (err, data) {

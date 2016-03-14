@@ -98,11 +98,12 @@ $scope.facebook = function() {
 })
 
 
-.controller('EventsCtrl', function($rootScope, $state, $stateParams, API, $scope) {
-  // $volunteer.doApiCall();
-  API.getAllEvents().success(function(data, status, headers, config){
-    $scope.events = data;
-    console.log(data);
+.controller('EventsCtrl', function($rootScope, $state, $stateParams, API, $scope, $volunteer) {
+// console.log(JSON.stringify($volunteer.getEvents('92109','10')));
+
+  $volunteer.getEvents('92109','10').success(function(data, status, headers, config){
+    $scope.events = data.items;
+    console.log(data.items);
   });
 
   $scope.selection = function(choice) {
@@ -119,8 +120,8 @@ $scope.facebook = function() {
 
   $scope.saveToMyList = function (choice) {
     console.log("ive been clicked");
-    choice.email = $localstorage.get('user.email');
-    API.saveMyList(choice, $localstorage.get('user.email')).success(function(data, status, headers, config){
+    choice.userId = $localstorage.get('user.id');
+    API.saveMyList(choice, $localstorage.get('user.id')).success(function(data, status, headers, config){
       console.log(data);
     });
     $state.go('tab.events');
@@ -130,7 +131,7 @@ $scope.facebook = function() {
 
 
 .controller('MyListCtrl', function($scope, $state, $localstorage, API) {
-  API.getAllMyList($localstorage.get('user.email')).success(function(data, status, headers, config){
+  API.getAllMyList($localstorage.get('user.id')).success(function(data, status, headers, config){
     $scope.events = data;
     console.log(data);
   });
@@ -149,6 +150,7 @@ $scope.facebook = function() {
 
 $scope.deleteFromMyList = function (choice) {
   console.log("i've been clicked!");
+    console.log(choice._id);
   API.deleteMyList(choice._id).success(function(data, status, headers, config){
     console.log(data);
     $state.go('tab.mylist');
