@@ -25,7 +25,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
 .config(function($stateProvider, $urlRouterProvider) {
 
-  $urlRouterProvider.otherwise('/tab/events')
+//   $urlRouterProvider.otherwise('/tab/events')
+$urlRouterProvider.otherwise('/landing')
 
   $stateProvider
   .state('landing', {

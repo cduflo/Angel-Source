@@ -2,7 +2,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth'])
 
 .controller('LandingCtrl', function($state, $scope, $network, $localstorage, $cordovaOauth, $http) {
     $network.getIP();
-
+//RE-ENABLE after TESTING. This bypasses login if the user is authenticated
     if (typeof $localstorage.get('user.id') != "undefined") {
         $state.go('tab.events');
     }
@@ -97,13 +97,28 @@ $scope.google = function () {
 
 
 .controller('EventsCtrl', function($state, $scope, $localstorage, $volunteer) {
+    $scope.eventCounter = 21;
+    $scope.fetch = function () {
     $volunteer.getEvents(
         $localstorage.getObject('userSettings').location,
         $localstorage.getObject('userSettings').radius,
-        $localstorage.getObject('userSettings').timeframe
+        $localstorage.getObject('userSettings').timeframe, 
+        $scope.eventCounter
     ).success(function(data, status, headers, config){
-        $scope.events = data.items;
+        if ($scope.eventCounter == 21) {
+            $scope.events = data.items;
+        } else {
+            $scope.events = $scope.events.concat(data.items);
+        }
+        $scope.$broadcast('scroll.infiniteScrollComplete');
     });
+    };
+    $scope.fetch();
+    
+    $scope.loadMore = function () {
+        $scope.eventCounter += 20;
+        $scope.fetch();
+    }
 
     $scope.selection = function(choice) {
         $state.go('tab.events-detail', { myParam: { selection: choice } })
