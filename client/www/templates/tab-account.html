@@ -5,8 +5,24 @@
         Enable Friends
     </ion-toggle> -->
     <ion-item>
-      <p>Zip Code</p> <input type="form" ng-model="userzip"></input>
+      <p>Zip Code</p> <input type="form" ng-model="userZip"></input>
+    </ion-item>
+    <ion-item>
+      <p>Search Radius</p> <input type="form" ng-model="userRadius"></input>
+    </ion-item>
+    <ion-item>
+      <p>Search Timeframe</p> <input type="form" ng-model="userTimeFrame"></input>
     </ion-item>
     </ion-list>
+    <label class="item item-input">
+      <button class="button button-block button-positive" ng-click="save()">
+        Save Settings
+      </button>
+    </label>
+    <label class="item item-input">
+      <button class="button button-block button-positive" ng-click="reset()">
+        Reset Settings
+      </button>
+    </label>
   </ion-content>
 </ion-view>

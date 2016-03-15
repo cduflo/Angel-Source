@@ -113,83 +113,98 @@ angular.module('starter.services', [])
     // signup: function (form) {
     //   return $http.post(base+'/api/v1/angelsource/auth/register', form);
     // },
-    getAllEvents: function (email) {
-      return $http.get(base+'/events', {
-        method: 'GET',
-        params: {
-          token: email
+    // getAllEvents: function (email) {
+    //   return $http.get(base+'/events', {
+    //     method: 'GET',
+    //     params: {
+    //       token: email
+    //     }
+    //   });
+    // },
+    // getOneEvent: function (id) {
+    //   return $http.get(base+'/event/' + id, {
+    //     method: 'GET',
+    //     params: {
+    //       // token: email
+    //     }
+    //   });
+    // },
+    // saveEvents: function (form) {
+    //   return $http.post(base+'/events', form, {
+    //     method: 'POST',
+    //     params: {
+    //       // token: email
+    //     }
+    //   });
+    // },
+    // putEvent: function (id) {
+    //   return $http.put(base+'/event/' + id, {
+    //     method: 'PUT',
+    //     params: {
+    //       // token: email
+    //     }
+    //   });
+    // },
+    // deleteEvent: function (id) {
+    //   return $http.delete(base+'/event/' + id, {
+    //     method: 'DELETE',
+    //     params: {
+    //       // token: email
+    //     }
+    //   });
+    // },
+    getAllMyList: function (userId) {
+              return $http.get(base+'/mylist/' + userId
+      , function (err, req, res, status) {
+        if (err) {
+            console.log("An error ocurred >>>>>>");
+            console.log(err);
+        } else {
+            console.log('Product deleted >>>>>>>');
+            console.log(status);
         }
       });
+    //   return $http.get(base+'/mylist/' + userId, {
+    //     method: 'GET'
+    //     // ,
+    //     // params: {
+    //     //   userId: userId
+    //     // }
+    //   });
     },
-    getOneEvent: function (id) {
-      return $http.get(base+'/event/' + id, {
-        method: 'GET',
-        params: {
-          // token: email
-        }
-      });
-    },
-    saveEvents: function (form) {
-      return $http.post(base+'/events', form, {
+    // getOneMyList: function (id) {
+    //   return $http.get(base+'/mylist/' + id, {
+    //     method: 'GET',
+    //     params: {
+    //       // token: email
+    //     }
+    //   });
+    // },
+    saveMyList: function (form, userId) {
+      return $http.post(base+'/mylist/' + userId, form, {
         method: 'POST',
         params: {
           // token: email
         }
       });
     },
-    putEvent: function (id) {
-      return $http.put(base+'/event/' + id, {
-        method: 'PUT',
-        params: {
-          // token: email
-        }
-      });
-    },
-    deleteEvent: function (id) {
-      return $http.delete(base+'/event/' + id, {
-        method: 'DELETE',
-        params: {
-          // token: email
-        }
-      });
-    },
-    getAllMyList: function (email) {
-      return $http.get(base+'/mylist/' + email, {
-        method: 'GET',
-        params: {
-          email: email
-        }
-      });
-    },
-    getOneMyList: function (id) {
-      return $http.get(base+'/mylist/' + id, {
-        method: 'GET',
-        params: {
-          // token: email
-        }
-      });
-    },
-    saveMyList: function (form, email) {
-      return $http.post(base+'/mylist/' + email, form, {
-        method: 'POST',
-        params: {
-          // token: email
-        }
-      });
-    },
-    putMyList: function (id) {
-      return $http.put(base+'/mylist/' + id, {
-        method: 'PUT',
-        params: {
-          // token: email
-        }
-      });
-    },
-    deleteMyList: function (id) {
-      return $http.delete(base+'/mylist/' + id, {
-        method: 'DELETE',
-        params: {
-          id : id
+    // putMyList: function (id) {
+    //   return $http.put(base+'/mylist/' + id, {
+    //     method: 'PUT',
+    //     params: {
+    //       // token: email
+    //     }
+    //   });
+    // },
+    deleteMyList: function (choice) {
+      return $http.delete(base+'/mylist/' + choice._id
+      , function (err, req, res, status) {
+        if (err) {
+            console.log("An error ocurred >>>>>>");
+            console.log(err);
+        } else {
+            console.log('Product deleted >>>>>>>');
+            console.log(status);
         }
       });
     }

@@ -7,8 +7,6 @@ var db = mongojs('mongodb://cduflo:Origin1914@ds023398.mlab.com:23398/angelsourc
 //Server
 var server = restify.createServer();
 
-
-
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
@@ -27,7 +25,7 @@ server.listen(process.env.PORT || 9804, function() {
 });
 //
 // var manageUsers = require('./auth/manageUser')(server, db);
-var manageEvents = require('./events/manageEvents')(server, db);
+// var manageEvents = require('./events/manageEvents')(server, db);
 var manageEvents = require('./events/manageMyList')(server, db);
 
 module.exports = server;
