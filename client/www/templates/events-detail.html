@@ -1,15 +1,26 @@
-<!--
-  This template loads for the 'tab.friend-detail' state (app.js)
-  'friend' is a $scope variable created in the FriendsCtrl controller (controllers.js)
-  The FriendsCtrl pulls data from the Friends service (service.js)
-  The Friends service returns an array of friend data
--->
+
 <ion-view view-title="Event Detail">
   <ion-content class="padding" ng-model="selection">
-    <!-- <img ng-src="{{chat.face}}" style="width: 64px; height: 64px"> -->
-        <h4>{{selection.title}}</h4>
-        <p>{{selection.description}}</p>
-
-    <button type="input" ng-click="saveToMyList(selection)">Save to <strong>My List</strong></button>
+        <div class="list card">
+            <div class="item item-header">
+                <!--<img src="mcfly.jpg">-->
+                <h2 style="padding-bottom: 1em">{{selection.title}}</h2>
+                <p><strong>Start: </strong>{{selection.startDate}}</p>
+                <p><strong>Finish: </strong>{{selection.endDate}}</p>
+            </div>
+            <div class="item item-body">
+                <!--<img class="full-image" src="delorean.jpg">-->
+                <p><strong>Location: </strong>{{selection.location_name}}</p>
+                <p>{{selection.description}}</p>
+                <p>
+                    <a href={{selection.detailUrl}}>More Details & Sign-Up</a>
+                </p>
+                <label class="item item-input">
+                    <button class="button button-block button-positive" ng-click="saveToMyList(selection)">
+                        Save to <strong>My List</strong>
+                    </button>
+                </label>
+            </div>
+        </div>
   </ion-content>
 </ion-view>

@@ -1,8 +1,8 @@
 angular.module('starter.services', [])
 .factory('$volunteer', function($http) {
     return {
-    getEvents: function (loc, dist) {
-      return $http.get('http://api2.allforgood.org/api/volopps?key=OriginCode&vol_loc='+loc+'&vol_dist='+dist+'&output=json', {
+    getEvents: function (loc, dist, timeframe) {
+      return $http.get('http://api2.allforgood.org/api/volopps?key=OriginCode&vol_loc='+loc+'&vol_dist='+dist+'&timeperiod='+timeframe+'&output=json&num=20', {
         method: 'GET'
       });
     }

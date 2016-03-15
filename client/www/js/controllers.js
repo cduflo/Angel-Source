@@ -96,8 +96,12 @@ $scope.google = function () {
 })
 
 
-.controller('EventsCtrl', function($state, $scope, $volunteer) {
-    $volunteer.getEvents('92109','10').success(function(data, status, headers, config){
+.controller('EventsCtrl', function($state, $scope, $localstorage, $volunteer) {
+    $volunteer.getEvents(
+        $localstorage.getObject('userSettings').location,
+        $localstorage.getObject('userSettings').radius,
+        $localstorage.getObject('userSettings').timeframe
+    ).success(function(data, status, headers, config){
         $scope.events = data.items;
     });
 
@@ -142,39 +146,42 @@ $scope.google = function () {
 
 
 .controller('AccountCtrl', function($scope, $localstorage) {
-  $scope.userZip; 
-  $scope.userRadius; 
-  $scope.userTimeFrame;
 
-  $scope.activate = function() {
-    $scope.userZip = $localstorage.getObject('userSettings').location;
-    $scope.userRadius = $localstorage.getObject('userSettings').radius;
-    $scope.userTimeFrame = $localstorage.getObject('userSettings').timeframe;
-  };
-  
-  $scope.activate();
-  
-      
-  $scope.reset = function () {
-      $localstorage.setObject('userSettings', { 
-          location: $localstorage.get('user.Zip'),
-          radius: 10,
-          timeframe: "this_week"
-      });
-      $scope.activate();
-  };
-  
-  if($localstorage.getObject('userSettings') == null)
-  {
-      $scope.reset();
-  }
+$scope.user = {};
 
-  $scope.save = function () {
-      console.log("I've been clicked!");
-      $localstorage.setObject('userSettings', { 
-          location: $scope.userZip,
-          radius: $scope.userRadius,
-          timeframe: $scope.userTimeFrame
-      });
+$scope.sync = function() {
+    angular.copy($scope.master, $scope.user);
+}
+
+$scope.activate = function () {
+    $scope.master = {
+    Zip: $localstorage.getObject('userSettings').location,
+    Radius: $localstorage.getObject('userSettings').radius,
+    TimeFrame: $localstorage.getObject('userSettings').timeframe
     };
+
+    $scope.sync();
+};
+
+$scope.activate();
+
+$scope.reset = function () {
+    $localstorage.setObject('userSettings', { 
+        location: $localstorage.get('user.Zip'),
+        radius: "10",
+        timeframe: "this_week"
+        });
+    $scope.activate();
+};
+  
+$scope.save = function () {
+    $localstorage.setObject('userSettings', { 
+        location: $scope.user.Zip,
+        radius: angular.copy($scope.user.Radius),
+        timeframe: $scope.user.TimeFrame
+        });
+
+        $scope.activate();
+};
+
 });
