@@ -5,9 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordovaOauth'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'ngCordovaOauth'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, GoogleMaps) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -20,13 +20,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+    GoogleMaps.init();
   });
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
 
 //   $urlRouterProvider.otherwise('/tab/events')
-$urlRouterProvider.otherwise('/landing')
+$urlRouterProvider.otherwise('/tab/events/map')
 
   $stateProvider
   .state('landing', {
@@ -86,6 +87,16 @@ $urlRouterProvider.otherwise('/landing')
       'tab-events': {
         templateUrl: 'templates/events-detail.html',
         controller: 'EventsDetailCtrl'
+      }
+    }
+  })
+  .state('tab.events-map', {
+    params: {myParam: null},
+    url: '/events/map', //EventsId
+    views: {
+      'tab-events': {
+        templateUrl: 'templates/map.html',
+        controller: 'MapCtrl'
       }
     }
   })
