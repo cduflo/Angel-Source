@@ -1,6 +1,12 @@
-<ion-view>
+<ion-view view-title="Events Map">
+    <ion-nav-buttons side="right">
+        <a class="button button-icon icon ion-ios-list-outline" ui-sref="tab.events"></a> 
+                <a class="button button-icon icon ion-plus" ng-click="fetch()"></a> 
+    </ion-nav-buttons> 
+
     <ion-content>
-        <p>HI!</p>
         <div id="map" data-tap-disabled="true"></div>
     </ion-content>
 </ion-view>
+
+

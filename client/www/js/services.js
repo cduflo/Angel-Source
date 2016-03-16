@@ -6,22 +6,12 @@ angular.module('starter.services', [])
         method: 'GET'
       });
     }
-//   return {
-//     getEvents: function(loc, dist) {
-//       $http.get('http://api2.allforgood.org/api/volopps?key=OriginCode&vol_loc='+loc+'&vol_dist='+dist+'&output=json').
-//       success(function(data, status, headers, config) {
-//            console.log(data.items);
-//       return(data.items);
-
-//       }).
-//       error(function(data, status, headers, config) {
-//       console.log("Error with fetching volunteer activities");
-//       });
-//     }
-//   }
 }})
-.factory('GoogleMaps', function($cordovaGeolocation, $volunteer,  $localstorage){
- 
+.factory('GoogleMaps', function($cordovaGeolocation, $volunteer, API, $localstorage){
+  
+  $localstorage.set('lastLoc', "null");
+  $localstorage.set('counter', 1);
+  
   var apiKey = false;
   var map = null;
  
@@ -30,7 +20,7 @@ angular.module('starter.services', [])
     var options = {timeout: 10000, enableHighAccuracy: true};
  
     $cordovaGeolocation.getCurrentPosition(options).then(function(position){
- 
+    console.log(position);
       var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
  
       var mapOptions = {
@@ -57,18 +47,23 @@ angular.module('starter.services', [])
     });
  
   }
- 
+
   function loadMarkers(){
- 
       //Get all of the markers from our Markers factory
       $volunteer.getEvents(
         $localstorage.getObject('userSettings').location,
         $localstorage.getObject('userSettings').radius,
         $localstorage.getObject('userSettings').timeframe, 
-        //$scope.eventCounter
-        "1"
+        
+        $localstorage.get('counter')
         ).then(function(markers){
- 
+            if ($localstorage.get('lastLoc') == $localstorage.getObject('userSettings').location){
+                $localstorage.set('counter', parseInt($localstorage.get('counter')) + 20);
+            } else {
+                $localstorage.set('lastLoc', $localstorage.getObject('userSettings').location);
+                $localstorage.set('counter', 1);
+            }
+        
         console.log("Markers: ", markers);
  
         var records = markers.data.items;
@@ -87,33 +82,47 @@ angular.module('starter.services', [])
               animation: google.maps.Animation.DROP,
               position: markerPos
           });
-          console.log(marker);
+          
+
  
-          var infoWindowContent = "<h4>" + record.title + "</h4>";          
- 
+          var infoWindowContent = "<h4>" + record.title + "</h4>"+ "<a href="+record.detailUrl+">More Details & Sign-Up</a>";
+        //   "<h4>" + record.title + "</h4>"+ "<a href="+record.detailUrl+">More Details & Sign-Up</a>"+  '<button class="button button-block button-positive" ng-click="saveToMyList()">Save to <strong>My List</strong> </button>  ';
+        //   var infoWindowContent = $compile(preInfoWindowContent)($scope);       
+        // console.log(infoWindowContent[0]);    
           addInfoWindow(marker, infoWindowContent, record);
  
         }
+
  
       }); 
  
   }
+  
+  var prev_infowindow =false; 
  
   function addInfoWindow(marker, message, record) {
- 
+
       var infoWindow = new google.maps.InfoWindow({
           content: message
       });
  
       google.maps.event.addListener(marker, 'click', function () {
-          infoWindow.open(map, marker);
-      });
+      if( prev_infowindow ) {
+           prev_infowindow.close();
+        }
+
+        prev_infowindow = infoWindow;
+        infoWindow.open(map, marker);
+    });
  
   }
  
   return {
     init: function(){
       initMap();
+    },
+    loadMore: function(){
+      loadMarkers();
     }
   }
  
