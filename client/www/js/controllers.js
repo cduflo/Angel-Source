@@ -34,7 +34,7 @@ $scope.google = function () {
         $localstorage.set('user.name', result2.data.given_name);
         $localstorage.set('user.id', result2.data.id);
         $localstorage.set('user.email', result2.data.email);
-        console.log(result2);
+         $state.go('tab.events');
         }, function(e){alert(e)});
         }, function(error) {
             console.log(error);
