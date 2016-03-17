@@ -178,8 +178,8 @@ angular.module('starter.services', [])
   }
 }])
 .factory('API', function ($rootScope, $http, $ionicLoading, $window) {
-//   var base = "http://localhost:9804";
-var base = "https://immense-woodland-84141.herokuapp.com";
+  var base = "http://localhost:9804";
+// var base = "https://immense-woodland-84141.herokuapp.com";
   $rootScope.show = function (text) {
     $rootScope.loading = $ionicLoading.show({
       content: text ? text : 'Loading',
