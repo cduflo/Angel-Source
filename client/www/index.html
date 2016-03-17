@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <!--<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">-->
-   <meta http-equiv="Content-Security-Policy" content="default-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; style-src  'self' 'unsafe-inline' *">
+   <meta http-equiv="Content-Security-Policy" content="default-src *; script-src &apos;self&apos; &apos;unsafe-inline&apos; &apos;unsafe-eval&apos; *; style-src  &apos;self&apos; &apos;unsafe-inline&apos; *">
 
    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title></title>
@@ -32,7 +32,7 @@
        <script src="js/directives.js"></script>
 
   </head>
-  <body ng-csp ng-app="starter">
+  <body ng-csp="" ng-app="starter">
     <!--
       The nav bar that will be updated as we navigate between views.
     -->

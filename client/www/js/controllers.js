@@ -177,7 +177,6 @@ $scope.google = function () {
 
 
 .controller('AccountCtrl', function($scope, $localstorage) {
-
 $scope.user = {};
 
 $scope.sync = function() {
@@ -204,6 +203,12 @@ $scope.reset = function () {
         });
     $scope.activate();
 };
+
+console.log($scope.user);
+if ($scope.user.Zip == undefined || $scope.user.Radius == undefined || $scope.user.TimeFrame == undefined) {
+    $scope.reset();
+    console.log("restting!");
+}
   
 $scope.save = function () {
     $localstorage.setObject('userSettings', { 

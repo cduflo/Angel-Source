@@ -54,7 +54,6 @@ angular.module('starter.services', [])
         $localstorage.getObject('userSettings').location,
         $localstorage.getObject('userSettings').radius,
         $localstorage.getObject('userSettings').timeframe, 
-        
         $localstorage.get('counter')
         ).then(function(markers){
             if ($localstorage.get('lastLoc') == $localstorage.getObject('userSettings').location){
@@ -92,8 +91,22 @@ angular.module('starter.services', [])
           addInfoWindow(marker, infoWindowContent, record);
  
         }
-
  
+ /////REFACTOR       /////
+        var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+         var options = {timeout: 10000, enableHighAccuracy: true};
+ 
+      $cordovaGeolocation.getCurrentPosition(options).then(function(position){
+    console.log(position);
+      var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+ 
+        var userLoc = new google.maps.Marker({
+              map: map,
+              icon: image,
+              position: latLng
+          });
+      })
+ //REFACTOR   //////
       }); 
  
   }
@@ -165,7 +178,8 @@ angular.module('starter.services', [])
   }
 }])
 .factory('API', function ($rootScope, $http, $ionicLoading, $window) {
-  var base = "http://localhost:9804";
+//   var base = "http://localhost:9804";
+var base = "https://immense-woodland-84141.herokuapp.com";
   $rootScope.show = function (text) {
     $rootScope.loading = $ionicLoading.show({
       content: text ? text : 'Loading',
