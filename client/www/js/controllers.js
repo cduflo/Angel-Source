@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', 'starter.directives'])
+angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova'])
 
 .controller('LandingCtrl', function($state, $scope, $network, $localstorage, $cordovaOauth, $http) {
     $network.getIP();

@@ -7,6 +7,32 @@ angular.module('starter.services', [])
       });
     }
 }})
+.factory('$network', function($localstorage, $http, $cordovaGeolocation) {
+      return {
+    getIP: function() {
+    var options = {timeout: 10000, enableHighAccuracy: true};
+    $cordovaGeolocation.getCurrentPosition(options).then(function(position){
+    console.log(position);
+              $http.get('https://maps.googleapis.com/maps/api/geocode/json?latlng='+position.coords.latitude+','+position.coords.longitude+'&result_type=street_address&key=AIzaSyBB5WwrBZdbLWp_LZoM0nvnWokSIzAobwc').
+              success(function(data,status,headers,config) {
+                  console.log(data.results[0]);
+              for(var i=0; i < data.results[0].address_components.length; i++)
+                {
+                    var component = data.results[0].address_components[i];
+                    if(component.types[0] == "postal_code")
+                    {
+                        console.log(component.long_name);
+                        $localstorage.set('user.Zip', component.long_name);
+                    }
+                }
+          }).
+          error(function(x, status, headers, config){
+            console.log("Error with Lat/Lng to Zip lookup");
+          });
+    });
+    }
+  }
+})
 .factory('GoogleMaps', function($cordovaGeolocation, $volunteer, API, $localstorage){
   
   $localstorage.set('lastLoc', "null");
@@ -93,7 +119,8 @@ angular.module('starter.services', [])
         }
  
  /////REFACTOR       /////
-        var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+        var image = './img/male-2.png';
+        
          var options = {timeout: 10000, enableHighAccuracy: true};
  
       $cordovaGeolocation.getCurrentPosition(options).then(function(position){
@@ -140,27 +167,7 @@ angular.module('starter.services', [])
   }
  
 })
-.factory('$network', ['$window', '$http', function($window, $http) {
-  return {
-    getIP: function() {
-      $http.get('http://ipv4.myexternalip.com/json').
-      success(function(data, status, headers, config) {
-      $window.localStorage['user.ip'] = data.ip;
-          $http.get('http://freegeoip.net/json/'+ data.ip).
-          success(function(loc,status,headers,config) {
-            $window.localStorage['user.Zip'] = loc.zip_code;
-            // loc.latitude, loc.longitude available if Maps integration
-          }).
-          error(function(x, status, headers, config){
-            console.log("Error with IP to Zip lookup");
-          });
-      }).
-      error(function(data, status, headers, config) {
-      console.log("Error with fetching IP");
-      });
-    }
-  }
-}])
+
 .factory('$localstorage', ['$window', function($window) {
   return {
     set: function(key, value) {
@@ -178,8 +185,8 @@ angular.module('starter.services', [])
   }
 }])
 .factory('API', function ($rootScope, $http, $ionicLoading, $window) {
-  var base = "http://localhost:9804";
-// var base = "https://immense-woodland-84141.herokuapp.com";
+//   var base = "http://localhost:9804";
+var base = "https://angel-source.herokuapp.com";
   $rootScope.show = function (text) {
     $rootScope.loading = $ionicLoading.show({
       content: text ? text : 'Loading',
