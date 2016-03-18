@@ -7,12 +7,32 @@ angular.module('starter.services', [])
       });
     }
 }})
+.factory('$Loc', function($localstorage, $http, $cordovaGeolocation) {
+      return {
+    getIP: function() {
+    var options = {timeout: 10000, enableHighAccuracy: true};
+    $cordovaGeolocation.getCurrentPosition(options).then(function(position){
+            var latLng = '';
+            if (position.status == 'succ') {
+                latLng = position.Result;
+            }
+            else {
+                latLng = "nope";
+            }
+            return latLng
+    })
+    }
+}
+      })
 .factory('$network', function($localstorage, $http, $cordovaGeolocation) {
       return {
     getIP: function() {
     var options = {timeout: 10000, enableHighAccuracy: true};
     $cordovaGeolocation.getCurrentPosition(options).then(function(position){
-    console.log(position);
+     $localstorage.setObject('userLocation', { 
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+        });
               $http.get('https://maps.googleapis.com/maps/api/geocode/json?latlng='+position.coords.latitude+','+position.coords.longitude+'&result_type=street_address&key=AIzaSyBB5WwrBZdbLWp_LZoM0nvnWokSIzAobwc').
               success(function(data,status,headers,config) {
                   console.log(data.results[0]);
@@ -136,7 +156,7 @@ angular.module('starter.services', [])
       })
  //REFACTOR   //////
       }); 
- 
+ return records;
   }
   
   var prev_infowindow =false; 
@@ -168,6 +188,20 @@ angular.module('starter.services', [])
   }
  
 })
+
+// .factory('$userLocation', function($cordovaGeolocation) {
+//       return {
+//         get: function () {           
+//             var options = {timeout: 10000, enableHighAccuracy: true};
+
+//             $cordovaGeolocation.getCurrentPosition(options).then(function(position){
+//                 console.log(position);
+//                 // return latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+//                 });
+
+//             }
+//       }
+// })
 
 .factory('$localstorage', ['$window', function($window) {
   return {

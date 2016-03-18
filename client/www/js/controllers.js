@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova'])
+angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', 'ngMap'])
 
 .controller('LandingCtrl', function($state, $scope, $network, $localstorage, $cordovaOauth, $http) {
     $network.getIP();
@@ -138,7 +138,7 @@ $scope.google = function () {
   }
 })
 
-.controller('MapCtrl', function($scope, $state, $cordovaGeolocation, GoogleMaps) {
+.controller('MapCtrl', function($scope, $state, $cordovaGeolocation, GoogleMaps, NgMap, $localstorage, $volunteer) {
 
             $scope.saveToMyList = function () {
                 console.log="clicked";
@@ -147,10 +147,57 @@ $scope.google = function () {
             // });
             // $state.go('tab.events');
             };
+            
+                  $volunteer.getEvents(
+        $localstorage.getObject('userSettings').location,
+        $localstorage.getObject('userSettings').radius,
+        $localstorage.getObject('userSettings').timeframe, 
+        $localstorage.get('counter')
+        ).then(function(markers){
+            if ($localstorage.get('lastLoc') == $localstorage.getObject('userSettings').location){
+                $localstorage.set('counter', parseInt($localstorage.get('counter')) + 20);
+            } else {
+                $localstorage.set('lastLoc', $localstorage.getObject('userSettings').location);
+                $localstorage.set('counter', 1);
+            }
+               records = markers.data.items;
+               console.log(markers.data.items);
+                    }
+        ) 
+          var records = [];
 
      $scope.fetch = function() {
-         GoogleMaps.loadMore();
+  
+            var markers = [];
+            for (var i = 0; i < records.length; i++) {
+            var record = records[i];   
+            var latlong = record.latlong.split(",");
+            record.lat = latlong[0];
+            record.lng = latlong[1];
+            var latlng = new google.maps.LatLng(record.lat, record.lng);
+            markers[i] = new google.maps.Marker({title: record.title});
+            markers[i].setPosition(latlng);
+            markers[i].setMap($scope.map);
+            console.log(markers[i]);
+            }
+
      }
+        $scope.lat = $localstorage.getObject("userLocation").lat;
+        $scope.lng = $localstorage.getObject("userLocation").lng;
+        // $network.getIP(). success(function(data, status, headers, config) {
+        // $scope.lat = data.geometry.location.lat;
+        // $scope.lng = data.geometry.location.lng;
+        // console.log($scope.lat, $scope.lng);
+        // });
+        
+    NgMap.getMap().then(function(map) { 
+    console.log(map.getCenter());
+    console.log('markers', map.markers);
+    console.log('shapes', map.shapes);
+  });
+  
+
+
 })
 
 
