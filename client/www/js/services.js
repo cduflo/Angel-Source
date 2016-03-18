@@ -109,7 +109,8 @@ angular.module('starter.services', [])
           });
           
 
-          var infoWindowContent = "<h4>" + record.title + "</h4>"+ '<a onClick="window.open(\''+record.detailUrl+'\',\'_system\',\'location=yes\');return false;">More Details & Sign-Up</a><a href="#" ng-click="$parent.$parent.$parent.saveToMyList()">SAVE</a>';
+          var infoWindowContent = "<h4>" + record.title + "</h4>"+ '<a onClick="window.open(\''+record.detailUrl+'\',\'_system\',\'location=yes\');return false;">More Details & Sign-Up</a>';
+        //   <a href="#" ng-click="$parent.$parent.$parent.saveToMyList()">SAVE</a>';
         //   var infoWindowContent = "<h4>" + record.title + "</h4>"+ "<a href="+record.detailUrl+">More Details & Sign-Up</a>";
         //   "<h4>" + record.title + "</h4>"+ "<a href="+record.detailUrl+">More Details & Sign-Up</a>"+  '<button class="button button-block button-positive" ng-click="saveToMyList()">Save to <strong>My List</strong> </button>  ';
         //   var infoWindowContent = $compile(preInfoWindowContent)($scope);       
