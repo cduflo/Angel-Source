@@ -1,19 +1,17 @@
 <ion-view view-title="Events Map">
     <ion-nav-buttons side="right">
-        <a class="button button-icon icon ion-ios-list-outline" ui-sref="tab.events"></a> 
-                <a class="button button-icon icon ion-plus" ng-click="fetch()"></a> 
-    </ion-nav-buttons> 
+        <a class="button button-icon icon ion-ios-list-outline" ui-sref="tab.events"></a>
+        <a class="button button-icon icon ion-plus" ng-click="fetch()"></a>
+    </ion-nav-buttons>
 
     <ion-content>
         <!--<div id="map" data-tap-disabled="true"></div>-->
         <div id="map" map-lazy-load="https://maps.google.com/maps/api/js" data-tap-disabled="true">
-        <ng-map id="map" center="{{lat}},{{lng}}" zoom="11">
-            <marker position="{{lat}},{{lng}}"/>
-            <marker ng-repeat="record in records" position="{{record.latlong}}"></marker>
-            <!--<marker position="record.lat, record.lng" ng-repeat="record in records"/>-->
+            <ng-map id="map" center="{{lat}},{{lng}}" zoom="11">
+                <marker position="{{lat}},{{lng}}" icon="img/male-2.png" />
+                <marker ng-repeat="record in records" position="{{record.latlong}}" on-click="showInfoWindow(event,record)"></marker>
+                <!--<marker position="record.lat, record.lng" ng-repeat="record in records"/>-->
             </ng-map>
         </div>
     </ion-content>
 </ion-view>
-
-
