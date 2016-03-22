@@ -1,7 +1,6 @@
 angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', 'ngMap'])
 
-.controller('LandingCtrl', function ($state, $scope, $network, $localstorage, $cordovaOauth, $http) {
-    $network.getIP();
+.controller('LandingCtrl', function ($state, $scope, $localstorage, $cordovaOauth, $http) {
     //RE-ENABLE after TESTING. This bypasses login if the user is authenticated
     if (typeof $localstorage.get('user.id') != "undefined") {
         $state.go('tab.events');
@@ -111,44 +110,74 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
 .controller('MapCtrl', function ($scope, $state, $cordovaGeolocation, NgMap, $localstorage, $volunteer, $network, $compile, API) {
     $localstorage.set('counter', 1);
     $scope.records = [];
-    $scope.saveToMyList = function () {
-        var choice = currentRecord;
-        choice.userId = $localstorage.get('user.id');
-        API.saveMyList(choice, $localstorage.get('user.id')).success(function (data, status, headers, config) {});
-        //        $state.go('tab.mylist');
-        alert(choice.title + " has been saved to My List!");
+    var infowindow;
+    var currentRecord;
+    if (infowindow) {
+        infowindow.setContent();
         infowindow.close();
+    }
+
+    $scope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+        if (infowindow) {
+            infowindow.setContent();
+            infowindow.close();
+        }
+    });
+    //    $scope.saveToMyList = function () {
+    //        var choice = currentRecord;
+    //        choice.userId = $localstorage.get('user.id');
+    //        API.saveMyList(choice, $localstorage.get('user.id')).success(function (data, status, headers, config) {});
+    //        //        $state.go('tab.mylist');
+    //        alert(choice.title + " has been saved to My List!");
+    //        infowindow.close();
+    //    };
+
+    $scope.goToEventDetail = function () {
+        infowindow.close();
+        $state.go('tab.events-detail', {
+            myParam: {
+                selection: currentRecord
+            }
+        })
     };
 
     $scope.fetch = function () {
-        $volunteer.getEvents(
-            $localstorage.getObject('userSettings').location,
-            $localstorage.getObject('userSettings').radius,
-            $localstorage.getObject('userSettings').timeframe,
-            $localstorage.get('counter')
-        ).then(function (markers) {
-            if ($localstorage.get('lastLoc') == $localstorage.getObject('userSettings').location) {
-                $localstorage.set('counter', parseInt($localstorage.get('counter')) + 20);
-            } else {
-                $localstorage.set('lastLoc', $localstorage.getObject('userSettings').location);
-                $localstorage.set('counter', 1);
+            if (infowindow) {
+                infowindow.SetContent();
+                infowindow.close();
             }
-            markers.data.items.forEach(function (item) {
-                $scope.records.push(item)
-            });
-            console.log($scope.records);
-        })
-    }
-    $scope.lat = $localstorage.getObject("userLocation").lat;
-    $scope.lng = $localstorage.getObject("userLocation").lng;
+            $volunteer.getEvents(
+                $localstorage.getObject('userSettings').location,
+                $localstorage.getObject('userSettings').radius,
+                $localstorage.getObject('userSettings').timeframe,
+                $localstorage.get('counter')
+            ).then(function (markers) {
+                if ($localstorage.get('lastLoc') == $localstorage.getObject('userSettings').location) {
+                    $localstorage.set('counter', parseInt($localstorage.get('counter')) + 20);
+                } else {
+                    $localstorage.set('lastLoc', $localstorage.getObject('userSettings').location);
+                    $localstorage.set('counter', 1);
+                }
+                markers.data.items.forEach(function (item) {
+                    $scope.records.push(item)
+                });
+                console.log($scope.records);
+            })
+        }
+        //    $scope.lat = $localstorage.getObject("userLocation").lat;
+        //    $scope.lng = $localstorage.getObject("userLocation").lng;
 
     $scope.$on('mapInitialized', function (event, map) {
+
+        google.maps.event.trigger(map, 'resize');
         $scope.objMapa = map;
+        $scope.records = [];
+        $scope.lat = $localstorage.getObject("userLocation").lat;
+        $scope.lng = $localstorage.getObject("userLocation").lng;
         $scope.fetch();
     });
 
-    var infowindow;
-    var currentRecord;
+
 
     $scope.showInfoWindow = function (event, record) {
         if (infowindow) {
@@ -161,9 +190,10 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
         record.lat = latlong[0];
         record.lng = latlong[1];
         var center = new google.maps.LatLng(record.lat, record.lng);
-        var infoWindowContent = "<h4>" + record.title + "</h4><p>" + record.description + '</p><a onClick="window.open(\'' + record.detailUrl + '\',\'_system\',\'location=yes\');return false;">More Details & Sign-Up</a><button class="button button-block button-positive" ng-click="$parent.saveToMyList()">Save to <strong>My List</strong> </button>';
-        $scope.compiled = $compile(infoWindowContent)($scope);
-        infowindow.setContent(infoWindowContent);
+        //        var infoWindowContent = "<h4>" + record.title + "</h4><p>" + record.description + '</p><a onClick="window.open(\'' + record.detailUrl + '\',\'_system\',\'location=yes\');return false;">More Details & Sign-Up</a><button class="button button-block button-positive" ng-click="$parent.saveToMyList()">Save to <strong>My List</strong> </button>';
+        var infoWindowContent = '<button class="button button-block button-positive" ng-click="goToEventDetail()">' + record.title + '</button>';
+        compiled = $compile(infoWindowContent)($scope);
+        infowindow.setContent(compiled[0]);
 
         infowindow.setPosition(center);
         infowindow.open($scope.objMapa);
@@ -198,7 +228,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
 })
 
 
-.controller('AccountCtrl', function ($scope, $localstorage) {
+.controller('AccountCtrl', function ($scope, $localstorage, $network, $settings) {
     $scope.user = {};
 
     $scope.sync = function () {
@@ -213,9 +243,10 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
         };
 
         $scope.sync();
+        $network.getLatLng($localstorage.getObject('userSettings').location);
     };
 
-    $scope.activate();
+
 
     $scope.reset = function () {
         $localstorage.setObject('userSettings', {
@@ -226,10 +257,8 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
         $scope.activate();
     };
 
-    console.log($scope.user);
     if ($scope.user.Zip == undefined || $scope.user.Radius == undefined || $scope.user.TimeFrame == undefined) {
         $scope.reset();
-        console.log("restting!");
     }
 
     $scope.save = function () {

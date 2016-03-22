@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'ngCordovaOauth', 'ngMap'])
 
-.run(function ($ionicPlatform, $network) {
+.run(function ($ionicPlatform, $network, $settings) {
     $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -21,7 +21,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             StatusBar.styleDefault();
         }
         // GoogleMaps.init();
-        $network.getIP();
+        $settings.setDefault();
+        $network.getUserZip();
     });
 })
 
@@ -96,6 +97,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             }
         })
         .state('tab.events-map', {
+            cache: false,
             params: {
                 myParam: null
             },

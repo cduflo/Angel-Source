@@ -29,16 +29,13 @@ angular.module('starter.services', [])
     })
     .factory('$network', function ($localstorage, $http, $cordovaGeolocation) {
         return {
-            getIP: function () {
+            //fetches user current lat/lng, sets user.Zip and userLocation local variables
+            getUserZip: function () {
                 var options = {
                     timeout: 10000,
                     enableHighAccuracy: true
                 };
                 $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
-                    $localstorage.setObject('userLocation', {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    })
                     $http.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + position.coords.latitude + ',' + position.coords.longitude + '&result_type=street_address&key=AIzaSyBB5WwrBZdbLWp_LZoM0nvnWokSIzAobwc').
                     success(function (data, status, headers, config) {
                         console.log(data.results[0]);
@@ -47,6 +44,17 @@ angular.module('starter.services', [])
                             if (component.types[0] == "postal_code") {
                                 console.log(component.long_name);
                                 $localstorage.set('user.Zip', component.long_name);
+                                $http.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + component.long_name + '&key=AIzaSyC7BKnOpmeElH2WplryoQPYulmQ8qHDG7E').
+                                success(function (data, status, headers, config) {
+                                    console.log(data.results[0]);
+                                    $localstorage.setObject('userLocation', {
+                                        lat: data.results[0].geometry.location.lat,
+                                        lng: data.results[0].geometry.location.lng
+                                    });
+                                }).
+                                error(function (x, status, headers, config) {
+                                    console.log("Error with Lat/Lng to Zip lookup");
+                                });
                             }
                         }
                     }).
@@ -55,13 +63,14 @@ angular.module('starter.services', [])
                     });
                 });
             },
-            getZip: function () {
-                $http.get('https://http://maps.googleapis.com/maps/api/geocode/json?address=' + $localstorage.getObject('userSettings').location).
+            //fetches lat/lng of requested Zip Code and applies it to userLocation local variable
+            getLatLng: function (zip) {
+                $http.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + zip + '&key=AIzaSyC7BKnOpmeElH2WplryoQPYulmQ8qHDG7E').
                 success(function (data, status, headers, config) {
                     console.log(data.results[0]);
                     $localstorage.setObject('userLocation', {
-                        lat: data.results.geometry.location.lat,
-                        lng: data.results.geometry.location.lat
+                        lat: data.results[0].geometry.location.lat,
+                        lng: data.results[0].geometry.location.lng
                     });
                 }).
                 error(function (x, status, headers, config) {
@@ -70,162 +79,196 @@ angular.module('starter.services', [])
             }
         }
     })
-//    .factory('GoogleMaps', function ($cordovaGeolocation, $volunteer, API, $localstorage) {
-             //
-             //        $localstorage.set('lastLoc', "null");
-             //        $localstorage.set('counter', 1);
-             //
-             //        var apiKey = false;
-             //        var map = null;
-             //
-             //        function initMap() {
-             //
-             //            var options = {
-             //                timeout: 10000,
-             //                enableHighAccuracy: true
-             //            };
-             //
-             //            $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
-             //                console.log(position);
-             //                var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-             //
-             //                var mapOptions = {
-             //                    center: latLng,
-             //                    zoom: 11,
-             //                    mapTypeId: google.maps.MapTypeId.ROADMAP
-             //                };
-             //
-             //                map = new google.maps.Map(document.getElementById("map"), mapOptions);
-             //
-             //                //Wait until the map is loaded
-             //                google.maps.event.addListenerOnce(map, 'idle', function () {
-             //
-             //                    //Load the markers
-             //                    loadMarkers();
-             //
-             //                });
-             //
-             //            }, function (error) {
-             //                console.log("Could not get location");
-             //
-             //                //Load the markers
-             //                loadMarkers();
-             //            });
-             //
-             //        }
-             //
-             //        function loadMarkers() {
-             //            //Get all of the markers from our Markers factory
-             //            $volunteer.getEvents(
-             //                $localstorage.getObject('userSettings').location,
-             //                $localstorage.getObject('userSettings').radius,
-             //                $localstorage.getObject('userSettings').timeframe,
-             //                $localstorage.get('counter')
-             //            ).then(function (markers) {
-             //                if ($localstorage.get('lastLoc') == $localstorage.getObject('userSettings').location) {
-             //                    $localstorage.set('counter', parseInt($localstorage.get('counter')) + 20);
-             //                } else {
-             //                    $localstorage.set('lastLoc', $localstorage.getObject('userSettings').location);
-             //                    $localstorage.set('counter', 1);
-             //                }
-             //
-             //                console.log("Markers: ", markers);
-             //
-             //                var records = markers.data.items;
-             //
-             //                for (var i = 0; i < records.length; i++) {
-             //
-             //                    var record = records[i];
-             //                    var latlong = record.latlong.split(",");
-             //                    var lat = latlong[0];
-             //                    var long = latlong[1];
-             //                    var markerPos = new google.maps.LatLng(lat, long);
-             //
-             //                    // Add the markerto the map
-             //                    var marker = new google.maps.Marker({
-             //                        map: map,
-             //                        animation: google.maps.Animation.DROP,
-             //                        position: markerPos
-             //                    });
-             //
-             //
-             //                    var infoWindowContent = "<h4>" + record.title + "</h4>" + '<a onClick="window.open(\'' + record.detailUrl + '\',\'_system\',\'location=yes\');return false;">More Details & Sign-Up</a>';
-             //                    //   <a href="#" ng-click="$parent.$parent.$parent.saveToMyList()">SAVE</a>';
-             //                    //   var infoWindowContent = "<h4>" + record.title + "</h4>"+ "<a href="+record.detailUrl+">More Details & Sign-Up</a>";
-             //                    //   "<h4>" + record.title + "</h4>"+ "<a href="+record.detailUrl+">More Details & Sign-Up</a>"+  '<button class="button button-block button-positive" ng-click="saveToMyList()">Save to <strong>My List</strong> </button>  ';
-             //                    //   var infoWindowContent = $compile(preInfoWindowContent)($scope);       
-             //                    // console.log(infoWindowContent[0]);    
-             //                    addInfoWindow(marker, infoWindowContent, record);
-             //
-             //                }
-             //
-             //                /////REFACTOR       /////
-             //                var image = './img/male-2.png';
-             //
-             //                var options = {
-             //                    timeout: 10000,
-             //                    enableHighAccuracy: true
-             //                };
-             //
-             //                $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
-             //                        console.log(position);
-             //                        var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-             //
-             //                        var userLoc = new google.maps.Marker({
-             //                            map: map,
-             //                            icon: image,
-             //                            position: latLng
-             //                        });
-             //                    })
-             //                    //REFACTOR   //////
-             //            });
-             //            return records;
-             //        }
-             //
-             //        var prev_infowindow = false;
-             //
-             //        function addInfoWindow(marker, message, record) {
-             //
-             //            var infoWindow = new google.maps.InfoWindow({
-             //                content: message
-             //            });
-             //
-             //            google.maps.event.addListener(marker, 'click', function () {
-             //                if (prev_infowindow) {
-             //                    prev_infowindow.close();
-             //                }
-             //
-             //                prev_infowindow = infoWindow;
-             //                infoWindow.open(map, marker);
-             //            });
-             //
-             //        }
-             //
-             //        return {
-             //            init: function () {
-             //                initMap();
-             //            },
-             //            loadMore: function () {
-             //                loadMarkers();
-             //            }
-             //        }
-             //
-             //    })
-             //
-             //// .factory('$userLocation', function($cordovaGeolocation) {
-             ////       return {
-             ////         get: function () {           
-             ////             var options = {timeout: 10000, enableHighAccuracy: true};
-             //
-             ////             $cordovaGeolocation.getCurrentPosition(options).then(function(position){
-             ////                 console.log(position);
-             ////                 // return latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-             ////                 });
-             //
-             ////             }
-             ////       }
-             //// })
-.factory('$localstorage', ['$window', function ($window) {
+    //sets Accounts default settings and user current Zip Code in userSettings local variable, sets user.Zip local variable, 
+    .factory('$settings', function ($localstorage, $http, $cordovaGeolocation) {
+        return {
+            setDefault: function () {
+                var options = {
+                    timeout: 10000,
+                    enableHighAccuracy: true
+                }
+                $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
+                    $http.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + position.coords.latitude + ',' + position.coords.longitude + '&result_type=street_address&key=AIzaSyC7BKnOpmeElH2WplryoQPYulmQ8qHDG7E').
+                    success(function (data, status, headers, config) {
+                        console.log(data.results[0]);
+                        for (var i = 0; i < data.results[0].address_components.length; i++) {
+                            var component = data.results[0].address_components[i];
+                            if (component.types[0] == "postal_code") {
+                                console.log(component.long_name);
+                                $localstorage.set('user.Zip', component.long_name);
+                                $localstorage.setObject('userSettings', {
+                                    location: component.long_name,
+                                    radius: "10",
+                                    timeframe: "this_week"
+                                });
+                            }
+                        }
+                    }).
+                    error(function (x, status, headers, config) {
+                        console.log("Error with Lat/Lng to Zip lookup");
+                    });
+                });
+
+            }
+
+        }
+    })
+    //    .factory('GoogleMaps', function ($cordovaGeolocation, $volunteer, API, $localstorage) {
+    //
+    //        $localstorage.set('lastLoc', "null");
+    //        $localstorage.set('counter', 1);
+    //
+    //        var apiKey = false;
+    //        var map = null;
+    //
+    //        function initMap() {
+    //
+    //            var options = {
+    //                timeout: 10000,
+    //                enableHighAccuracy: true
+    //            };
+    //
+    //            $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
+    //                console.log(position);
+    //                var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    //
+    //                var mapOptions = {
+    //                    center: latLng,
+    //                    zoom: 11,
+    //                    mapTypeId: google.maps.MapTypeId.ROADMAP
+    //                };
+    //
+    //                map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    //
+    //                //Wait until the map is loaded
+    //                google.maps.event.addListenerOnce(map, 'idle', function () {
+    //
+    //                    //Load the markers
+    //                    loadMarkers();
+    //
+    //                });
+    //
+    //            }, function (error) {
+    //                console.log("Could not get location");
+    //
+    //                //Load the markers
+    //                loadMarkers();
+    //            });
+    //
+    //        }
+    //
+    //        function loadMarkers() {
+    //            //Get all of the markers from our Markers factory
+    //            $volunteer.getEvents(
+    //                $localstorage.getObject('userSettings').location,
+    //                $localstorage.getObject('userSettings').radius,
+    //                $localstorage.getObject('userSettings').timeframe,
+    //                $localstorage.get('counter')
+    //            ).then(function (markers) {
+    //                if ($localstorage.get('lastLoc') == $localstorage.getObject('userSettings').location) {
+    //                    $localstorage.set('counter', parseInt($localstorage.get('counter')) + 20);
+    //                } else {
+    //                    $localstorage.set('lastLoc', $localstorage.getObject('userSettings').location);
+    //                    $localstorage.set('counter', 1);
+    //                }
+    //
+    //                console.log("Markers: ", markers);
+    //
+    //                var records = markers.data.items;
+    //
+    //                for (var i = 0; i < records.length; i++) {
+    //
+    //                    var record = records[i];
+    //                    var latlong = record.latlong.split(",");
+    //                    var lat = latlong[0];
+    //                    var long = latlong[1];
+    //                    var markerPos = new google.maps.LatLng(lat, long);
+    //
+    //                    // Add the markerto the map
+    //                    var marker = new google.maps.Marker({
+    //                        map: map,
+    //                        animation: google.maps.Animation.DROP,
+    //                        position: markerPos
+    //                    });
+    //
+    //
+    //                    var infoWindowContent = "<h4>" + record.title + "</h4>" + '<a onClick="window.open(\'' + record.detailUrl + '\',\'_system\',\'location=yes\');return false;">More Details & Sign-Up</a>';
+    //                    //   <a href="#" ng-click="$parent.$parent.$parent.saveToMyList()">SAVE</a>';
+    //                    //   var infoWindowContent = "<h4>" + record.title + "</h4>"+ "<a href="+record.detailUrl+">More Details & Sign-Up</a>";
+    //                    //   "<h4>" + record.title + "</h4>"+ "<a href="+record.detailUrl+">More Details & Sign-Up</a>"+  '<button class="button button-block button-positive" ng-click="saveToMyList()">Save to <strong>My List</strong> </button>  ';
+    //                    //   var infoWindowContent = $compile(preInfoWindowContent)($scope);       
+    //                    // console.log(infoWindowContent[0]);    
+    //                    addInfoWindow(marker, infoWindowContent, record);
+    //
+    //                }
+    //
+    //                /////REFACTOR       /////
+    //                var image = './img/male-2.png';
+    //
+    //                var options = {
+    //                    timeout: 10000,
+    //                    enableHighAccuracy: true
+    //                };
+    //
+    //                $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
+    //                        console.log(position);
+    //                        var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    //
+    //                        var userLoc = new google.maps.Marker({
+    //                            map: map,
+    //                            icon: image,
+    //                            position: latLng
+    //                        });
+    //                    })
+    //                    //REFACTOR   //////
+    //            });
+    //            return records;
+    //        }
+    //
+    //        var prev_infowindow = false;
+    //
+    //        function addInfoWindow(marker, message, record) {
+    //
+    //            var infoWindow = new google.maps.InfoWindow({
+    //                content: message
+    //            });
+    //
+    //            google.maps.event.addListener(marker, 'click', function () {
+    //                if (prev_infowindow) {
+    //                    prev_infowindow.close();
+    //                }
+    //
+    //                prev_infowindow = infoWindow;
+    //                infoWindow.open(map, marker);
+    //            });
+    //
+    //        }
+    //
+    //        return {
+    //            init: function () {
+    //                initMap();
+    //            },
+    //            loadMore: function () {
+    //                loadMarkers();
+    //            }
+    //        }
+    //
+    //    })
+    //
+    //// .factory('$userLocation', function($cordovaGeolocation) {
+    ////       return {
+    ////         get: function () {           
+    ////             var options = {timeout: 10000, enableHighAccuracy: true};
+    //
+    ////             $cordovaGeolocation.getCurrentPosition(options).then(function(position){
+    ////                 console.log(position);
+    ////                 // return latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    ////                 });
+    //
+    ////             }
+    ////       }
+    //// })
+    .factory('$localstorage', ['$window', function ($window) {
         return {
             set: function (key, value) {
                 $window.localStorage[key] = value;
