@@ -7,8 +7,12 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'ngCordovaOauth', 'ngMap'])
 
-.run(function ($ionicPlatform, $network, $settings) {
+.run(function ($ionicPlatform, $network, $settings, $cordovaSplashscreen) {
     $ionicPlatform.ready(function () {
+        setTimeout(function () {
+            $cordovaSplashscreen.hide()
+        }, 3000)
+
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
         if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
