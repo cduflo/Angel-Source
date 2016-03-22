@@ -26,7 +26,6 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
                 }, function (e) {
                     alert(e)
                 });
-                //var picture = result.data.picture;
                 $state.go('tab.events');
             }, function (error) {
                 alert("There was a problem signing in!  See the console for logs");

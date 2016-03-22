@@ -11,7 +11,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     $ionicPlatform.ready(function () {
         setTimeout(function () {
             $cordovaSplashscreen.hide()
-        }, 3000)
+        }, 2000)
 
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -33,7 +33,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 .config(function ($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise('/landing')
-        //    $urlRouterProvider.otherwise('/tab/events/map')
+        //    $urlRouterProvider.otherwise('/tab/events')
 
     $stateProvider
         .state('landing', {
