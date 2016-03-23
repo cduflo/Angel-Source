@@ -94,7 +94,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
 })
 
 
-.controller('EventsDetailCtrl', function ($scope, $state, API, $localstorage, $stateParams) {
+.controller('EventsDetailCtrl', function ($scope, $state, API, $localstorage, $stateParams, $cordovaInAppBrowser) {
     $scope.selection = $stateParams.myParam.selection;
 
     $scope.saveToMyList = function (choice) {
@@ -105,6 +105,20 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
         } else {
             $state.go('tab.events-map');
         }
+    }
+
+    $scope.launchExtMap = function () {
+        var address = $scope.selection.location_name;
+        var url = '';
+        //        if (device.platform === 'iOS' || device.platform === 'iPhone' || navigator.userAgent.match(/(iPhone|iPod|iPad)/)) {
+        //        url = "http://maps.apple.com/maps?q=" + encodeURIComponent(address);
+        //        } else if (navigator.userAgent.match(/(Android|BlackBerry|IEMobile)/)) {
+        //            url = "geo:?q=" + encodeURIComponent(address);
+        //        } else {
+        //            //this will be used for browsers if we ever want to convert to a website
+        url = "http://maps.google.com?q=" + encodeURIComponent(address);
+        //        }
+        window.open(url, "_system", 'location=no');
     }
 })
 

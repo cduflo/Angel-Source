@@ -1,6 +1,5 @@
-
 <ion-view view-title="Event Detail">
-  <ion-content class="padding" ng-model="selection">
+    <ion-content class="padding" ng-model="selection">
         <div class="list card">
             <div class="item item-header item-text-wrap">
                 <!--<img src="mcfly.jpg">-->
@@ -9,8 +8,10 @@
                 <p><strong>Finish: </strong>{{selection.endDate}}</p>
             </div>
             <div class="item item-body">
-                <!--<img class="full-image" src="delorean.jpg">-->
-                <p><strong>Location: </strong>{{selection.location_name}}</p>
+                <p>
+                    <strong>Location: </strong>
+                    <a href ng-click="launchExtMap()">{{selection.location_name}}</a>
+                </p>
                 <p>{{selection.description}}</p>
                 <p>
                     <a href={{selection.detailUrl}}>More Details & Sign-Up</a>
@@ -22,5 +23,5 @@
                 </label>
             </div>
         </div>
-  </ion-content>
+    </ion-content>
 </ion-view>

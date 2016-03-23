@@ -3,6 +3,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
 .run(function ($ionicPlatform, $network, $settings, $cordovaSplashscreen) {
     $ionicPlatform.ready(function () {
+        //Hide splash screen after 2 seconds, gives the application time to fetch user location and set default settings
+        setTimeout(function () {
+            $cordovaSplashscreen.hide()
+        }, 2000);
 
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -14,11 +18,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             // org.apache.cordova.statusbar required
             StatusBar.styleDefault();
         }
-
-        //Hide splash screen after 2 seconds, gives the application time to fetch user location and set default settings
-        setTimeout(function () {
-            $cordovaSplashscreen.hide()
-        }, 2000);
 
         //Fetches user's current location and sets User defaults to local storage and Settings tab
         $settings.setDefault();
