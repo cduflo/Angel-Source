@@ -1,17 +1,8 @@
-// Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.services' is found in services.js
-// 'starter.controllers' is found in controllers.js
+//Angel-Source App
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'ngCordovaOauth', 'ngMap'])
 
 .run(function ($ionicPlatform, $network, $settings, $cordovaSplashscreen) {
     $ionicPlatform.ready(function () {
-        setTimeout(function () {
-            $cordovaSplashscreen.hide()
-        }, 2000)
 
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -23,7 +14,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             // org.apache.cordova.statusbar required
             StatusBar.styleDefault();
         }
-        // GoogleMaps.init();
+
+        //Hide splash screen after 2 seconds, gives the application time to fetch user location and set default settings
+        setTimeout(function () {
+            $cordovaSplashscreen.hide()
+        }, 2000);
+
+        //Fetches user's current location and sets User defaults to local storage and Settings tab
         $settings.setDefault();
         $network.getUserZip();
     });
@@ -33,7 +30,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 .config(function ($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise('/landing')
-        //    $urlRouterProvider.otherwise('/tab/events')
 
     $stateProvider
         .state('landing', {
@@ -41,41 +37,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             templateUrl: "templates/landing.html",
             controller: 'LandingCtrl'
         })
-        //   .state('auth', {
-        //     url: "/auth",
-        //     abstract: true,
-        //     templateUrl: "templates/auth.html"
-        //   })
-        //   .state('auth.signin', {
-        //     url: '/signin',
-        //     views: {
-        //       'auth-signin': {
-        //         templateUrl: 'templates/auth-signin.html',
-        //         controller: 'SignInCtrl'
-        //       }
-        //     }
-        //   })
-        //   .state('auth.signup', {
-        //     url: '/signup',
-        //     views: {
-        //       'auth-signup': {
-        //         templateUrl: 'templates/auth-signup.html',
-        //         controller: 'SignUpCtrl'
-        //       }
-        //     }
-        //   })
-
-    // setup an abstract state for the tabs directive
-    .state('tab', {
-        url: '/tab',
-        abstract: true,
-        templateUrl: 'templates/tabs.html',
-        controller: 'TabsCtrl'
-    })
-
-    // Each tab has its own nav history stack:
-
-    .state('tab.events', {
+        // setup an abstract state for the tabs directive
+        .state('tab', {
+            url: '/tab',
+            abstract: true,
+            templateUrl: 'templates/tabs.html',
+            controller: 'TabsCtrl'
+        })
+        .state('tab.events', {
             cache: false,
             params: {
                 myParam: null
@@ -113,8 +82,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 }
             }
         })
-
-    .state('tab.mylist', {
+        .state('tab.mylist', {
             cache: false,
             params: {
                 myParam: null
@@ -139,15 +107,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 }
             }
         })
-
-    .state('tab.account', {
-        url: '/account',
-        views: {
-            'tab-account': {
-                templateUrl: 'templates/tab-account.html',
-                controller: 'AccountCtrl'
+        .state('tab.account', {
+            url: '/account',
+            views: {
+                'tab-account': {
+                    templateUrl: 'templates/tab-account.html',
+                    controller: 'AccountCtrl'
+                }
             }
-        }
-    })
+        })
 
 })

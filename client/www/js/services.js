@@ -8,25 +8,6 @@ angular.module('starter.services', [])
             }
         }
     })
-    .factory('$Loc', function ($localstorage, $http, $cordovaGeolocation) {
-        return {
-            getIP: function () {
-                var options = {
-                    timeout: 10000,
-                    enableHighAccuracy: true
-                };
-                $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
-                    var latLng = '';
-                    if (position.status == 'succ') {
-                        latLng = position.Result;
-                    } else {
-                        latLng = "nope";
-                    }
-                    return latLng
-                })
-            }
-        }
-    })
     .factory('$network', function ($localstorage, $http, $cordovaGeolocation) {
         return {
             //fetches user current lat/lng, sets user.Zip and userLocation local variables
@@ -185,10 +166,10 @@ angular.module('starter.services', [])
         getAllMyList: function (userId) {
             return $http.get(base + '/mylist/' + userId, function (err, req, res, status) {
                 if (err) {
-                    console.log("An error ocurred >>>>>>");
+                    console.log("Error fetching MyList >>>>>>");
                     console.log(err);
                 } else {
-                    console.log('Product deleted >>>>>>>');
+                    console.log('Status >>>>>>>');
                     console.log(status);
                 }
             });
@@ -202,7 +183,7 @@ angular.module('starter.services', [])
         deleteMyList: function (choice) {
             return $http.delete(base + '/mylist/' + choice._id, function (err, req, res, status) {
                 if (err) {
-                    console.log("An error ocurred >>>>>>");
+                    console.log("Error deleting from MyList >>>>>>");
                     console.log(err);
                 } else {
                     console.log('Product deleted >>>>>>>');

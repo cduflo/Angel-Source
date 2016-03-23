@@ -1,11 +1,9 @@
 angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', 'ngMap'])
 
 .controller('LandingCtrl', function ($state, $scope, $localstorage, $cordovaOauth, $http) {
-    //RE-ENABLE after TESTING. This bypasses login if the user is authenticated
     if (typeof $localstorage.get('user.id') != "undefined") {
         $state.go('tab.events');
     }
-
 
     $scope.facebook = function () {
         $cordovaOauth.facebook("1173863462625566", ["email", "public_profile"], {
@@ -57,7 +55,6 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
     $scope.goTo = function (state) {
         $state.go(state);
     }
-
 })
 
 
@@ -108,11 +105,10 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
         } else {
             $state.go('tab.events-map');
         }
-
     }
 })
 
-.controller('MapCtrl', function ($rootScope, $scope, $state, $cordovaGeolocation, NgMap, $localstorage, $volunteer, $network, $compile, API) {
+.controller('MapCtrl', function ($rootScope, $scope, $state, $localstorage, $volunteer, $network, $compile) {
     $localstorage.set('counter', 1);
     $scope.records = [];
     var infowindow;
@@ -213,7 +209,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
 })
 
 
-.controller('AccountCtrl', function ($scope, $localstorage, $network, $settings) {
+.controller('AccountCtrl', function ($scope, $localstorage, $network) {
     $scope.user = {};
 
     $scope.sync = function () {
@@ -230,8 +226,6 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
         $scope.sync();
         $network.getLatLng($localstorage.getObject('userSettings').location);
     };
-
-
 
     $scope.reset = function () {
         $localstorage.setObject('userSettings', {
