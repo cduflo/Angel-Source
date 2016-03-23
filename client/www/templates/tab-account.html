@@ -1,44 +1,46 @@
 <ion-view view-title="Account">
-  <ion-content>
-      <div class="list">
-  <label class="item item-input">
-    <span class="input-label">Zip Code</span>
-    <input type="text" ng-model="user.Zip" style="text-align:right; padding-right:3.5em;">
-  </label>
-  <label class="item item-input item-select">
-    <div class="input-label">
-      Search Radius
-    </div>
-        <select ng-model="user.Radius">
-            <option value="10">10 mi.</option>
-            <option value="25">25 mi.</option>
-            <option value="50">50 mi.</option>
-            <option value="100">100 mi.</option>
-            <option value="250">250 mi.</option>
-        </select>
-  </label>
-  <label class="item item-input item-select">
-    <div class="input-label">
-      Time Frame
-    </div>
-        <select ng-model="user.TimeFrame" >
-            <option value="today">Today</option>
-            <option value="this_week">This Week</option>
-            <option value="this_weekend">This Weekend</option>
-            <option value="this_month">This Month</option>
-        </select>
-  </label>
-</div>
+    <ion-content>
+        <div class="list">
+            <label class="item item-input">
+                <span class="input-label">Zip Code</span>
+                <input type="text" ng-model="user.Zip" style="text-align:right; padding-right:3.5em;">
+            </label>
+            <label class="item item-input item-select">
+                <div class="input-label">
+                    Search Radius
+                </div>
+                <select ng-model="user.Radius">
+                    <option value="10">10 mi.</option>
+                    <option value="25">25 mi.</option>
+                    <option value="50">50 mi.</option>
+                    <option value="100">100 mi.</option>
+                    <option value="250">250 mi.</option>
+                </select>
+            </label>
+            <label class="item item-input item-select">
+                <div class="input-label">
+                    Time Frame
+                </div>
+                <select ng-model="user.TimeFrame">
+                    <option value="today">Today</option>
+                    <option value="this_week">This Week</option>
+                    <option value="this_weekend">This Weekend</option>
+                    <option value="this_month">This Month</option>
+                </select>
+            </label>
+        </div>
+        <div class="item item-body">
+            <div>
+                <button class="button button-block button-positive" ng-click="save()" style="padding-right:1em">
+                    Save Settings
+                </button>
+            </div>
+            <div>
+                <button class="button button-block button-positive" ng-click="reset()">
+                    Reset Settings
+                </button>
 
-    <label class="item item-input text-center" style="text-align:center;">
-      <button class="button button-block button-positive" ng-click="save()" style="padding-right:1em">
-        Save Settings
-      </button>
-    </label>
-    <label class="item item-input">
-      <button class="button button-block button-positive" ng-click="reset()">
-        Reset Settings
-      </button>
-    </label>
-  </ion-content>
+            </div>
+        </div>
+    </ion-content>
 </ion-view>

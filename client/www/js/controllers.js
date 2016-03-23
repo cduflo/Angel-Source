@@ -4,7 +4,6 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
     if (typeof $localstorage.get('user.id') != "undefined") {
         $state.go('tab.events');
     }
-
     $scope.facebook = function () {
         $cordovaOauth.facebook("1173863462625566", ["email", "public_profile"], {
                 redirect_uri: "http://localhost/callback"
@@ -212,7 +211,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
 })
 
 
-.controller('MyListCtrl', function ($scope, $state, $localstorage, API) {
+.controller('MyListCtrl', function ($scope, $state, $localstorage, API, $cordovaEmailComposer) {
     API.getAllMyList($localstorage.get('user.id')).success(function (data, status, headers, config) {
         $scope.events = data;
     });
@@ -227,9 +226,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
 
     $scope.deleteFromMyList = function (choice) {
         API.deleteMyList(choice).success(function (data, status, headers, config) {
-            $state.go($state.current, {}, {
-                reload: true
-            });
+            $scope.events.splice($scope.events.indexOf(choice), 1);
         });
     };
 })
