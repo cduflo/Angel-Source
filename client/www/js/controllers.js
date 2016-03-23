@@ -58,7 +58,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
 })
 
 
-.controller('EventsCtrl', function ($state, $scope, $localstorage, $volunteer) {
+.controller('EventsCtrl', function ($state, $scope, $localstorage, $volunteer, API, $ionicListDelegate, $ionicPopup) {
     $scope.eventCounter = 21;
     $scope.fetch = function () {
         $volunteer.getEvents(
@@ -91,6 +91,21 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
         })
     };
 
+    $scope.saveToMyList = function (choice) {
+        choice.userId = $localstorage.get('user.id');
+        API.saveMyList(choice, $localstorage.get('user.id')).success(function (data, status, headers, config) {});
+        var alertPopup = $ionicPopup.alert({
+            title: "Great news!",
+            template: choice.title + " was added your to My List"
+        });
+
+        alertPopup.then(function (res) {
+            console.log('Thank you for not eating my delicious ice cream cone');
+        });
+        //        alert(choice.title + " was added to My List");
+        $ionicListDelegate.closeOptionButtons();
+    };
+
 })
 
 
@@ -105,7 +120,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
         } else {
             $state.go('tab.events-map');
         }
-    }
+    };
 
     $scope.launchExtMap = function () {
         var address = $scope.selection.location_name;
@@ -209,6 +224,14 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
             }
         })
     };
+
+    $scope.deleteFromMyList = function (choice) {
+        API.deleteMyList(choice).success(function (data, status, headers, config) {
+            $state.go($state.current, {}, {
+                reload: true
+            });
+        });
+    };
 })
 
 
@@ -220,6 +243,13 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
             $state.go('tab.mylist');
         });
     };
+
+    $scope.launchExtMap = function () {
+        var address = $scope.selection.location_name;
+        var url = '';
+        url = "http://maps.google.com?q=" + encodeURIComponent(address);
+        window.open(url, "_system", 'location=no');
+    }
 })
 
 

@@ -1,9 +1,11 @@
 <ion-view view-title="My List">
-  <ion-content class="padding">
-    <ion-list>
-      <ion-item ng-repeat="event in events" ng-click="selection(event)">
-        <p>{{event.title}}</p>
-      </ion-item>
-    </ion-list>
-  </ion-content>
+    <ion-content class="padding">
+        <ion-list show-delete="false" can-swipe="true">
+            <ion-item ng-repeat="event in events" ng-click="selection(event)">
+                <p>{{event.title}}</p>
+<!--                <ion-option-button class="button-light icon ion-email" ng-click="composeEmail()"></ion-option-button>-->
+                <ion-option-button class="button-assertive icon ion-trash-a" ng-click="deleteFromMyList(event)"></ion-option-button>
+            </ion-item>
+        </ion-list>
+    </ion-content>
 </ion-view>
