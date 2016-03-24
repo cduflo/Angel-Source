@@ -18,9 +18,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             // org.apache.cordova.statusbar required
             StatusBar.styleDefault();
         }
-        document.addEventListener('deviceready', function () {
-            console.log('cordova.plugins.email is now available');
-        }, false);
 
         //Fetches user's current location and sets User defaults to local storage and Settings tab
         $settings.setDefault();
@@ -32,6 +29,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 .config(function ($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise('/landing');
+    //    $urlRouterProvider.otherwise('/tab/events');
 
     $stateProvider
         .state('landing', {

@@ -5,7 +5,18 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
         $state.go('tab.events');
     }
     $scope.facebook = function () {
-        $cordovaOauth.facebook("1173863462625566", ["email", "public_profile"], {
+        //        hello.init({
+        //            facebook: '1173863462625566'
+        //        }, {
+        //            redirect_uri: "http://localhost/callback"
+        //        });
+        //        hello('facebook').login(function () {
+        //            hello('facebook').api('/me').success(function (json) {
+        //                console.log(json);
+        //
+        //            });
+        //        });
+        $cordovaOauth.facebook("1173863462625566", ["email", "public_profile", "publish_actions"], {
                 redirect_uri: "http://localhost/callback"
             })
             .then(function (result) {
@@ -57,7 +68,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
 })
 
 
-.controller('EventsCtrl', function ($state, $scope, $localstorage, $volunteer, API, $ionicListDelegate, $ionicPopup) {
+.controller('EventsCtrl', function ($state, $scope, $localstorage, $volunteer, API, $ionicListDelegate, $ionicPopup, $cordovaSocialSharing) {
     $scope.eventCounter = 21;
     $scope.fetch = function () {
         $volunteer.getEvents(
@@ -103,6 +114,10 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
         });
         //        alert(choice.title + " was added to My List");
         $ionicListDelegate.closeOptionButtons();
+    };
+
+    $scope.share = function (event) {
+        $cordovaSocialSharing.share(event.description, "Hey! Check out this volunteer opportunity!", null, event.base_url);
     };
 
 })
@@ -211,7 +226,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
 })
 
 
-.controller('MyListCtrl', function ($scope, $state, $localstorage, API, $cordovaEmailComposer) {
+.controller('MyListCtrl', function ($scope, $state, $localstorage, API, $cordovaSocialSharing) {
     API.getAllMyList($localstorage.get('user.id')).success(function (data, status, headers, config) {
         $scope.events = data;
     });
@@ -228,6 +243,10 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
         API.deleteMyList(choice).success(function (data, status, headers, config) {
             $scope.events.splice($scope.events.indexOf(choice), 1);
         });
+    };
+
+    $scope.share = function (event) {
+        $cordovaSocialSharing.share(event.description, "Hey! Check out this volunteer opportunity!", null, event.base_url);
     };
 })
 
