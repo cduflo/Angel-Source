@@ -31,7 +31,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
 .config(function ($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise('/landing')
+    $urlRouterProvider.otherwise('/landing');
 
     $stateProvider
         .state('landing', {
