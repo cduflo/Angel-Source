@@ -1,9 +1,9 @@
 angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', 'ngMap'])
 
 .controller('LandingCtrl', function ($state, $scope, $localstorage, $cordovaOauth, $http) {
-//    if (typeof $localstorage.get('user.id') != "undefined") {
-      //        $state.go('tab.events');
-      //    }
+    if (typeof $localstorage.get('user.id') != "undefined") {
+        $state.go('tab.events');
+    }
     $scope.facebook = function () {
         //        hello.init({
         //            facebook: '1173863462625566'
