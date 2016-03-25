@@ -1,72 +1,24 @@
 angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', 'ngMap'])
 
-.controller('LandingCtrl', function ($state, $scope, $localstorage, $cordovaOauth, $http) {
-    if (typeof $localstorage.get('user.id') != "undefined") {
-        $state.go('tab.events');
-    }
+.controller('LandingCtrl', function ($state, $scope, $localstorage, $facebook, $google) {
+        if (typeof $localstorage.get('user.id') != "undefined") {
+            $state.go('tab.events');
+        }
     $scope.facebook = function () {
-        //        hello.init({
-        //            facebook: '1173863462625566'
-        //        }, {
-        //            redirect_uri: "http://localhost/callback"
-        //        });
-        //        hello('facebook').login(function () {
-        //            hello('facebook').api('/me').success(function (json) {
-        //                console.log(json);
-        //
-        //            });
-        //        });
-        $cordovaOauth.facebook("1173863462625566", ["email", "public_profile", "publish_actions"], {
-                redirect_uri: "http://localhost/callback"
-            })
-            .then(function (result) {
-                $localstorage.set('fbOauthToken', result.access_token);
-                $http.get("https://graph.facebook.com/v2.2/me", {
-                    params: {
-                        access_token: result.access_token,
-                        fields: "id, first_name,email,location,picture",
-                        format: "json"
-                    }
-                }).then(function (result2) {
-                    $localstorage.set('user.name', result2.data.first_name);
-                    $localstorage.set('user.id', result2.data.id);
-                    $localstorage.set('user.email', result2.data.email);
-                }, function (e) {
-                    alert(e)
-                });
-                $state.go('tab.events');
-            }, function (error) {
-                alert("There was a problem signing in!  See the console for logs");
-                console.log(error);
-            });
+        $facebook.login();
     };
 
     $scope.google = function () {
-        console.log("I've been clicked!");
-        $cordovaOauth.google("1090639021269-o87cav3hut98lnse9lbjiovk9krj3cae.apps.googleusercontent.com", ["https://www.googleapis.com/auth/urlshortener", "https://www.googleapis.com/auth/userinfo.email"]).then(function (result) {
-            $localstorage.set('gOauthToken', result.access_token);
-            $http.get("https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + result.access_token).then(function (result2) {
-                $localstorage.set('user.name', result2.data.given_name);
-                $localstorage.set('user.id', result2.data.id);
-                $localstorage.set('user.email', result2.data.email);
-                $state.go('tab.events');
-            }, function (e) {
-                alert(e)
-            });
-        }, function (error) {
-            console.log(error);
-        });
+        $google.login();
     };
 
 })
-
 
 .controller('TabsCtrl', function ($scope, $state) {
     $scope.goTo = function (state) {
         $state.go(state);
     }
 })
-
 
 .controller('EventsCtrl', function ($state, $scope, $localstorage, $volunteer, API, $ionicListDelegate, $ionicPopup, $cordovaSocialSharing) {
     $scope.eventCounter = 21;
@@ -85,6 +37,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
             $scope.$broadcast('scroll.infiniteScrollComplete');
         });
     };
+
     $scope.fetch();
 
     $scope.loadMore = function () {
@@ -109,10 +62,8 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
             template: choice.title + " was added your to My List"
         });
 
-        alertPopup.then(function (res) {
-            console.log('Thank you for not eating my delicious ice cream cone');
-        });
-        //        alert(choice.title + " was added to My List");
+        alertPopup.then(function (res) {});
+
         $ionicListDelegate.closeOptionButtons();
     };
 
@@ -139,14 +90,8 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
     $scope.launchExtMap = function () {
         var address = $scope.selection.location_name;
         var url = '';
-        //        if (device.platform === 'iOS' || device.platform === 'iPhone' || navigator.userAgent.match(/(iPhone|iPod|iPad)/)) {
         //        url = "http://maps.apple.com/maps?q=" + encodeURIComponent(address);
-        //        } else if (navigator.userAgent.match(/(Android|BlackBerry|IEMobile)/)) {
-        //            url = "geo:?q=" + encodeURIComponent(address);
-        //        } else {
-        //            //this will be used for browsers if we ever want to convert to a website
         url = "http://maps.google.com?q=" + encodeURIComponent(address);
-        //        }
         window.open(url, "_system", 'location=no');
     }
 })
@@ -197,7 +142,6 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
 
     $rootScope.$on('$stateChangeStart',
         function (event, toState, toParams, fromState, fromParams) {
-            console.log("Changing!");
             if (infowindow) {
                 infowindow.close();
             }
@@ -226,9 +170,11 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
 })
 
 
-.controller('MyListCtrl', function ($scope, $state, $localstorage, API, $cordovaSocialSharing) {
+.controller('MyListCtrl', function ($rootScope, $scope, $state, $localstorage, API, $cordovaSocialSharing) {
     API.getAllMyList($localstorage.get('user.id')).success(function (data, status, headers, config) {
+        $rootScope.show("Please wait... Fetching your list");
         $scope.events = data;
+        $rootScope.hide();
     });
 
     $scope.selection = function (choice) {

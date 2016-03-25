@@ -15,7 +15,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             cordova.plugins.Keyboard.disableScroll(true);
         }
         if (window.StatusBar) {
-            // org.apache.cordova.statusbar required
             StatusBar.styleDefault();
         }
 
@@ -29,7 +28,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 .config(function ($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise('/landing');
-    //    $urlRouterProvider.otherwise('/tab/events');
 
     $stateProvider
         .state('landing', {

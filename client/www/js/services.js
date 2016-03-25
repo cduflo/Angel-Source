@@ -1,5 +1,54 @@
 angular.module('starter.services', [])
-    .factory('$volunteer', function ($http) {
+    .factory('$facebook', function ($state, $localstorage, $cordovaOauth, $http) {
+        return {
+            login: function () {
+                $cordovaOauth.facebook("1173863462625566", ["email", "public_profile"], {
+                        redirect_uri: "http://localhost/callback"
+                    })
+                    .then(function (result) {
+                        $localstorage.set('fbOauthToken', result.access_token);
+                        $http.get("https://graph.facebook.com/v2.2/me", {
+                            params: {
+                                access_token: result.access_token,
+                                fields: "id, first_name,email,location,picture",
+                                format: "json"
+                            }
+                        }).then(function (result2) {
+                            $localstorage.set('user.name', result2.data.first_name);
+                            $localstorage.set('user.id', result2.data.id);
+                            $localstorage.set('user.email', result2.data.email);
+                        }, function (e) {
+                            alert(e)
+                        });
+                        $state.go('tab.events');
+                    }, function (error) {
+                        alert("There was a problem signing in!  See the console for logs");
+                        console.log(error);
+                    });
+            }
+        }
+    })
+    .factory('$google', function ($state, $localstorage, $cordovaOauth, $http) {
+        return {
+            login: function () {
+                $cordovaOauth.google("1090639021269-o87cav3hut98lnse9lbjiovk9krj3cae.apps.googleusercontent.com", ["https://www.googleapis.com/auth/urlshortener", "https://www.googleapis.com/auth/userinfo.email"]).then(function (result) {
+                    $localstorage.set('gOauthToken', result.access_token);
+                    $http.get("https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + result.access_token).then(function (result2) {
+                        $localstorage.set('user.name', result2.data.given_name);
+                        $localstorage.set('user.id', result2.data.id);
+                        $localstorage.set('user.email', result2.data.email);
+                        $state.go('tab.events');
+                    }, function (e) {
+                        alert(e)
+                    });
+                }, function (error) {
+                    console.log(error);
+                });
+            }
+        }
+    })
+
+.factory('$volunteer', function ($http) {
         return {
             getEvents: function (loc, dist, timeframe, counter) {
                 return $http.get('http://api2.allforgood.org/api/volopps?key=OriginCode&vol_loc=' + loc + '&vol_dist=' + dist + '&timeperiod=' + timeframe + '&start=' + counter + '&output=json&num=20', {
@@ -113,7 +162,7 @@ angular.module('starter.services', [])
 }])
 
 .factory('API', function ($rootScope, $http, $ionicLoading, $window) {
-    //   var base = "http://localhost:9804";
+    //   var base = "http://localhost:9804";   -- used for local testing. Discontinued because serve is now on Heroku
     var base = "https://angel-source.herokuapp.com";
     $rootScope.show = function (text) {
         $rootScope.loading = $ionicLoading.show({
@@ -129,38 +178,12 @@ angular.module('starter.services', [])
         $ionicLoading.hide();
     };
 
-    $rootScope.logout = function () {
-        $rootScope.setToken("");
-        $window.location.href = '#/auth/signin';
-    };
-
     $rootScope.notify = function (text) {
         $rootScope.show(text);
         $window.setTimeout(function () {
             $rootScope.hide();
         }, 1999);
     };
-
-    $rootScope.doRefresh = function (tab) {
-        if (tab == 1)
-            $rootScope.$broadcast('fetchAll');
-        else
-            $rootScope.$broadcast('fetchCompleted');
-
-        $rootScope.$broadcast('scroll.refreshComplete');
-    };
-
-    $rootScope.setToken = function (token) {
-        return $window.localStorage.token = token;
-    }
-
-    $rootScope.getToken = function () {
-        return $window.localStorage.token;
-    }
-
-    $rootScope.isSessionActive = function () {
-        return $window.localStorage.token ? true : false;
-    }
 
     return {
         getAllMyList: function (userId) {
