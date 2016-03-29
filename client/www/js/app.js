@@ -1,7 +1,7 @@
 //Angel-Source App
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'ngCordovaOauth', 'ngMap'])
 
-.run(function ($ionicPlatform, $network, $settings, $cordovaSplashscreen) {
+.run(function ($ionicPlatform, $network, $settings, $cordovaSplashscreen, $localstorage) {
     $ionicPlatform.ready(function () {
         //Hide splash screen after 2 seconds, gives the application time to fetch user location and set default settings
         setTimeout(function () {
@@ -21,6 +21,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         //Fetches user's current location and sets User defaults to local storage and Settings tab
         $settings.setDefault();
         $network.getUserZip();
+
+        //Resets indicator for MyList accessed - Workaround for UX around Heroku(free version) sleeping
+        $localstorage.set('MyList', "not accessed");
     });
 })
 

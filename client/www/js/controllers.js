@@ -1,9 +1,9 @@
 angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', 'ngMap'])
 
 .controller('LandingCtrl', function ($state, $scope, $localstorage, $facebook, $google) {
-        if (typeof $localstorage.get('user.id') != "undefined") {
-            $state.go('tab.events');
-        }
+    if (typeof $localstorage.get('user.id') != "undefined") {
+        $state.go('tab.events');
+    }
     $scope.facebook = function () {
         $facebook.login();
     };
@@ -170,11 +170,21 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
 })
 
 
-.controller('MyListCtrl', function ($rootScope, $scope, $state, $localstorage, API, $cordovaSocialSharing) {
+.controller('MyListCtrl', function ($scope, $state, $localstorage, API, $ionicLoading, $cordovaSocialSharing) {
+    if ($localstorage.get('MyList') == "not accessed") {
+        $ionicLoading.show({
+            content: 'Loading',
+            animation: 'fade-in',
+            showBackdrop: true,
+            maxWidth: 200,
+            showDelay: 0
+        });
+    }
+
     API.getAllMyList($localstorage.get('user.id')).success(function (data, status, headers, config) {
-        $rootScope.show("Please wait... Fetching your list");
         $scope.events = data;
-        $rootScope.hide();
+        $localstorage.set('MyList', "accessed");
+        $ionicLoading.hide();
     });
 
     $scope.selection = function (choice) {
