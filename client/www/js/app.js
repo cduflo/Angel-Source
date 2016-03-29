@@ -19,8 +19,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
 
         //Fetches user's current location and sets User defaults to local storage and Settings tab
-        $settings.setDefault();
-        $network.getUserZip();
+        $ionicPlatform.ready(function () {
+            console.log("platform ready");
+            $settings.setDefault();
+            $network.getUserZip();
+        })
 
         //Resets indicator for MyList accessed - Workaround for UX around Heroku(free version) sleeping
         $localstorage.set('MyList', "not accessed");

@@ -118,6 +118,7 @@ angular.module('starter.services', [])
                     enableHighAccuracy: true
                 }
                 $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
+                    console.log(position);
                     $http.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + position.coords.latitude + ',' + position.coords.longitude + '&result_type=street_address&key=AIzaSyC7BKnOpmeElH2WplryoQPYulmQ8qHDG7E').
                     success(function (data, status, headers, config) {
                         console.log(data.results[0]);
@@ -157,6 +158,12 @@ angular.module('starter.services', [])
         },
         getObject: function (key) {
             return JSON.parse($window.localStorage[key] || '{}');
+        },
+        clear: function () {
+            $window.localStorage.clear();
+        },
+        destroy: function (key) {
+            return localStorage.removeItem(key);
         }
     }
 }])

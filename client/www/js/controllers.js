@@ -20,7 +20,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
     }
 })
 
-.controller('EventsCtrl', function ($state, $scope, $localstorage, $volunteer, API, $ionicListDelegate, $ionicPopup, $cordovaSocialSharing) {
+.controller('EventsCtrl', function ($state, $scope, $localstorage, $volunteer, API, $ionicListDelegate, $ionicLoading, $ionicPopup, $cordovaSocialSharing) {
     $scope.eventCounter = 21;
     $scope.fetch = function () {
         $volunteer.getEvents(
@@ -225,7 +225,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
 })
 
 
-.controller('AccountCtrl', function ($scope, $localstorage, $network) {
+.controller('AccountCtrl', function ($scope, $state, $localstorage, $network) {
     $scope.user = {};
 
     $scope.sync = function () {
@@ -265,5 +265,10 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
 
         $scope.activate();
     };
+
+    $scope.logout = function () {
+        $localstorage.destroy("user.id");
+        $state.go('landing');
+    }
 
 });
