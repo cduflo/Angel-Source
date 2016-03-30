@@ -1,4 +1,12 @@
 {
   "name": "angel-source",
-  "app_id": "08bd5741"
+  "app_id": "08bd5741",
+  "gulpStartupTasks": [
+    "sass",
+    "watch"
+  ],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*"
+  ]
 }
