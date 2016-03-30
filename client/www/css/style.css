@@ -44,6 +44,18 @@ input,
 select,
 p,
 div,
-body {
+body,
+span {
     font-family: 'Lato'
+}
+
+.ion-ios-customicon,
+.ion-md-customicon {
+    content: url(../img/mapicon.png);
+    width: 36px;
+    height: 32px;
+    padding: 6px 4px 2px;
+    opacity: 0.9;
+    margin-right: 1em;
+    color: black;
 }

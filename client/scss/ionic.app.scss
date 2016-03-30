@@ -15,12 +15,21 @@ $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
 
+$light:                           #33cd5f !default;
+$stable:                          #33cd5f !default;
+$positive:                        #33cd5f !default;
+$calm:                            #33cd5f !default;
+$balanced:                        #33cd5f !default;
+$energized:                       #33cd5f !default;
+$assertive:                       #33cd5f !default;
+$royal:                           #33cd5f !default;
+$dark:                            #33cd5f !default;
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
-$font-family-base: "Lato",
-'Lato' !default;
+//@import url(http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext) $font-family-base: "Lato",
+//'Lato' !default;
 .scroll {
     height: 100%;
 }
