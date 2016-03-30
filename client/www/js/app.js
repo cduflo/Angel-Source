@@ -1,13 +1,8 @@
 //Angel-Source App
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'ngCordovaOauth', 'ngMap'])
 
-.run(function ($ionicPlatform, $network, $settings, $cordovaSplashscreen, $localstorage) {
+.run(function ($ionicPlatform, $network, $settings, $localstorage) {
     $ionicPlatform.ready(function () {
-        //Hide splash screen after 2 seconds, gives the application time to fetch user location and set default settings
-        setTimeout(function () {
-            $cordovaSplashscreen.hide()
-        }, 2000);
-
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
         if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
