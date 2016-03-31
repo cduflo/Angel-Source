@@ -10,7 +10,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             cordova.plugins.Keyboard.disableScroll(true);
         }
         if (window.StatusBar) {
-            StatusBar.styleDefault();
+            //            StatusBar.styleDefault();
+            StatusBar.style(1);
         }
 
         //Fetches user's current location and sets User defaults to local storage and Settings tab

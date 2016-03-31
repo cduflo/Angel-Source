@@ -24,6 +24,10 @@ h3 {
     background-image: url('../img/landing.jpg');
 }
 
+.button {
+    line-height: 25px;
+}
+
 @font-face {
     font-family: 'Lato';
     src: url('../fonts/Lato-Regular.eot');
@@ -58,4 +62,34 @@ span {
     opacity: 0.9;
     margin-right: 1em;
     color: black;
+}
+
+.bar.bar-stable .title,
+.bar-stable .button,
+.bar-stable .button:after,
+.button:after,
+.bar-stable .button.button-clear {
+    color: #E8F1F2;
+}
+
+.whiter {
+    color: #E8F1F2;
+}
+
+ion-tabs.tabs-color-active-positive .tab-item.tab-item-active,
+ion-tabs.tabs-color-active-positive .tab-item.active,
+ion-tabs.tabs-color-active-positive .tab-item.activated {
+    color: #E8F1F2;
+}
+
+ion-tabs.tabs-color-active-positive .tab-item {
+    color: white;
+}
+
+body {
+    background-color: #E8F1F2;
+}
+
+.tabs-top.tabs-striped .tab-item {
+    background-color: #006494;
 }
