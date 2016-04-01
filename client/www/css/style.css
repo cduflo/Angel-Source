@@ -112,6 +112,37 @@ body {
     background-color: #006494;
 }
 
-.special {
-    background-image: linear-gradient(to bottom, #3ac9f2, #1b98e0);
+.special,
+.bar-stable {
+    background-image: linear-gradient(to bottom, #3ac9f2, #1b98e0) !important;
+}
+
+.account-key {
+    text-align: right;
+    font-size: 11px;
+    width: 13em
+}
+
+.account-value {
+    text-align: left;
+    color: #006494 !important;
+    padding-left: 12px !important;
+    font-size: 22px !important;
+}
+
+.account-select {
+    direction: ltr !important;
+    width: 233px !important;
+}
+
+.angel-button {
+    width: 200px !important;
+    position: absolute !important;
+    /*  top: 55%; -- set on object*/
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+}
+
+.ionic-scroll {
+    background-color: #f9f9f9;
 }

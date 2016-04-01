@@ -3,8 +3,8 @@
         <ion-list show-delete="false" can-swipe="true">
             <ion-item ng-repeat="event in events" ng-click="selection(event)">
                 <p>{{event.title}}</p>
-                <ion-option-button class="button-positive icon ion-ios-trash-outline" ng-click="deleteFromMyList(event)"></ion-option-button>
-                <ion-option-button class="button-positive icon ion-ios-upload-outline" ng-click="share(event)"></ion-option-button>
+                <ion-option-button class="button-positive icon ion-ios-trash-outline special" ng-click="deleteFromMyList(event)"></ion-option-button>
+                <ion-option-button class="button-positive icon ion-ios-upload-outline special" ng-click="share(event)"></ion-option-button>
             </ion-item>
         </ion-list>
     </ion-content>
