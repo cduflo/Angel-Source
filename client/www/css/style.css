@@ -146,3 +146,22 @@ body {
 .ionic-scroll {
     background-color: #f9f9f9;
 }
+
+.tabs,
+.tab-item {
+    background-color: #f9f9f9;
+    color: grey !important;
+}
+
+.tab-item.tab-item-active,
+.tab-item.active,
+.tab-item.activated {
+    color: #1b98e0 !important;
+}
+
+
+/*
+.tab-item.active,
+.tab-item.activated {
+    color: #1b98e0 !important;
+}*/
