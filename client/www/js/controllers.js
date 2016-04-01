@@ -2,8 +2,8 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
 
 .controller('LandingCtrl', function ($state, $scope, $localstorage, $facebook, $google) {
     if (typeof $localstorage.get('user.id') != "undefined") {
-    $state.go('tab.events');
-}
+        $state.go('tab.events');
+    }
     $scope.facebook = function () {
         $facebook.login();
     };
@@ -74,17 +74,25 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
 })
 
 
-.controller('EventsDetailCtrl', function ($scope, $state, API, $localstorage, $stateParams, $cordovaInAppBrowser) {
+.controller('EventsDetailCtrl', function ($scope, $state, API, $localstorage, $stateParams, $cordovaInAppBrowser, $ionicPopup, $cordovaSocialSharing) {
     $scope.selection = $stateParams.myParam.selection;
 
     $scope.saveToMyList = function (choice) {
         choice.userId = $localstorage.get('user.id');
         API.saveMyList(choice, $localstorage.get('user.id')).success(function (data, status, headers, config) {});
-        if ($stateParams.myParam.origin == "list") {
-            $state.go('tab.events');
-        } else {
-            $state.go('tab.events-map');
-        }
+        var alertPopup = $ionicPopup.alert({
+            title: "Great news!",
+            template: choice.title + " was added your to My List"
+        });
+
+        alertPopup.then(function (res) {
+            if ($stateParams.myParam.origin == "list") {
+                $state.go('tab.events');
+            } else {
+                $state.go('tab.events-map');
+            }
+        });
+
     };
 
     $scope.launchExtMap = function () {
@@ -94,6 +102,10 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
         url = "http://maps.google.com?q=" + encodeURIComponent(address);
         window.open(url, "_system", 'location=no');
     }
+
+    $scope.share = function (event) {
+        $cordovaSocialSharing.share(event.description, "Hey! Check out this volunteer opportunity!", null, event.base_url);
+    };
 })
 
 .controller('MapCtrl', function ($rootScope, $scope, $state, $localstorage, $volunteer, $network, $compile) {
@@ -207,12 +219,20 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
 })
 
 
-.controller('MyListDetailCtrl', function ($scope, $state, API, $stateParams) {
+.controller('MyListDetailCtrl', function ($scope, $state, API, $stateParams, $ionicPopup) {
     $scope.selection = $stateParams.myParam.selection;
 
     $scope.deleteFromMyList = function (choice) {
         API.deleteMyList(choice).success(function (data, status, headers, config) {
-            $state.go('tab.mylist');
+            var alertPopup = $ionicPopup.alert({
+                title: "No worries!",
+                template: choice.title + " was removed from your My List"
+            });
+
+            alertPopup.then(function (res) {
+                $state.go('tab.mylist');
+            });
+
         });
     };
 

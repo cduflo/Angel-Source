@@ -1,4 +1,8 @@
 <ion-view view-title="Event Detail">
+    <ion-nav-buttons side="right">
+        <a class="button button-icon icon ion-ios-trash-outline" ng-click="deleteFromMyList(selection)" style="color: #f9f9f9;"></a>
+        <a class="button button-icon icon ion-ios-upload-outline" ng-click="share(selection)" style="color: #f9f9f9;"></a>
+    </ion-nav-buttons>
     <ion-content class="padding" ng-model="selection">
         <div class="list card">
             <div class="item item-header item-text-wrap">
@@ -23,18 +27,17 @@
                 </div>
             </div>
             <div class="item item-body" style="padding-top:5px;">
-
                 <h2>{{selection.title}}</h2>
-
                 <p>{{selection.description}}</p>
-                <p>
-                    <a href={{selection.detailUrl}}>More Details & Sign-Up</a>
-                </p>
-                <label class="item item-input">
-                    <button class="button button-block button-positive" ng-click="deleteFromMyList(selection) ">
+                <div class="row" style="padding-bottom:8px;">
+                    <button class="button button-block button-positive" href={{selection.detailUrl}} style="float:left; width:180px; height: 45px; padding:7px;">
+                        Details & Sign-Up
+                    </button>
+                    <button class="button button-block button-positive" ng-click="deleteFromMyList(selection)" style="margin:10px;height: 45px; padding:0px;  background-color:transparent; color:#cc0000; width:150px; font-size:14px;">
                         Delete from <strong>My List</strong>
                     </button>
-                </label>
+                </div>
+
             </div>
         </div>
     </ion-content>
