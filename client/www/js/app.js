@@ -19,6 +19,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             console.log("platform ready");
             $settings.setDefault();
             $network.getUserZip();
+            cordova.plugins.Keyboard.disableScroll(true);
         })
 
         //Resets indicator for MyList accessed - Workaround for UX around Heroku(free version) sleeping

@@ -141,6 +141,7 @@ body {
     /*  top: 55%; -- set on object*/
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
+    position: fixed !important;
 }
 
 .ionic-scroll {
