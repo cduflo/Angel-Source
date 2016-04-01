@@ -30,9 +30,11 @@
                 <h2>{{selection.title}}</h2>
                 <p>{{selection.description}}</p>
                 <div class="row" style="padding-bottom:8px;">
-                    <button class="button button-block button-positive" href={{selection.detailUrl}} style="float:left; width:180px; height: 45px; padding:7px;">
-                        Details & Sign-Up
-                    </button>
+                    <a href={{selection.detailUrl}}>
+                        <button class="button button-block button-positive" style="float:left; width:165px; height: 45px;">
+                            Details & Sign-Up
+                        </button>
+                    </a>
                     <button class="button button-block button-positive" ng-click="deleteFromMyList(selection)" style="margin:10px;height: 45px; padding:0px;  background-color:transparent; color:#cc0000; width:150px; font-size:14px;">
                         Delete from <strong>My List</strong>
                     </button>

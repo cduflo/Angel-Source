@@ -183,15 +183,15 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
 
 
 .controller('MyListCtrl', function ($scope, $state, $localstorage, API, $ionicLoading, $cordovaSocialSharing) {
-    if ($localstorage.get('MyList') == "not accessed") {
-        $ionicLoading.show({
-            content: 'Loading',
-            animation: 'fade-in',
-            showBackdrop: true,
-            maxWidth: 200,
-            showDelay: 0
-        });
-    }
+    //    if ($localstorage.get('MyList') == "not accessed") {
+    $ionicLoading.show({
+        content: 'Loading',
+        animation: 'fade-in',
+        showBackdrop: true,
+        maxWidth: 200,
+        showDelay: 0
+    });
+    //    }
 
     API.getAllMyList($localstorage.get('user.id')).success(function (data, status, headers, config) {
         $scope.events = data;
