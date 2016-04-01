@@ -2,20 +2,34 @@
     <ion-nav-buttons side="left">
         <button class="button button-icon button-clear ion-navicon" ng-click="openMenu()"></button>
     </ion-nav-buttons>
-    <ion-content class="landing" padding="true">
-        <h3 class="text-center">Angel-Source</h3>
-        <div class="row">
+    <ion-content class="landing special" padding="true">
+        <div style="text-align:center; padding-top:10em;"><img src="img/angelsourcelogo.png" style="max-width:10em;	  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);"></div>
+        <div style="text-align:center; padding-top:10em;">
+            <h4 style="width: 200px; position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); color: #E8F1F2; font-size:35px; font-family: Lato-Light">Angel Source</h4></div>
+        <div class="row" style="text-align:center">
             <div class="col">
                 <div class="text-center">
-                    <h4 style="padding-top:2em;">Login</h4>
-                    <div>
-                        <button class="button button-block button-positive" ng-click="facebook()">
-                            with Facebook
+                    <div style="padding-top:9em;">
+                        <button class="button button-block button-positive" ng-click="facebook()" style="width: 200px; position: absolute;
+  top: 66%;
+  left: 50%;
+  transform: translate(-50%, -50%); background-color:#3a5898;">
+                            <img src="img/facebook.png" style="max-width:20px; padding-right:3px;padding-bottom:-3px;"> Login with Facebook
                         </button>
                     </div>
-                    <div>
-                        <button class="button button-block button-positive" ng-click="google()">
-                            with Google
+                    <div style="padding-top:1em;">
+                        <button class="button button-block button-positive" ng-click="google()" style="width: 200px; position: absolute;
+  top: 76%;
+  left: 50%;
+  transform: translate(-50%, -50%); background-color:#ffffff; color: rgba(0, 0, 0, 0.5)
+;"><img src="img/google.png" style="max-width:20px; padding-right:3px;
+  top: 60%;"> Sign in with Google
                         </button>
                     </div>
                 </div>

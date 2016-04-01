@@ -36,6 +36,14 @@ h3 {
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'Lato-Light';
+    src: url('../fonts/Lato-Light.eot');
+    src: url('../fonts/Lato-Light.eot') format('embedded-opentype'), url('../fonts/Lato-Light.woff') format('woff'), url('../fonts/Lato-Light.ttf') format('truetype'), url('../fonts/Lato-Light.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
 h1,
 h2,
 h3,
@@ -64,22 +72,32 @@ span {
     color: black;
 }
 
+.ion-ios-star-active,
+.ion-md-star-active {
+    content: url(../img/star-active.png);
+    width: 36px;
+    height: 32px;
+    padding: 6px 4px 2px;
+    opacity: 0.9;
+    margin-right: 1em;
+}
+
 .bar.bar-stable .title,
 .bar-stable .button,
 .bar-stable .button:after,
 .button:after,
 .bar-stable .button.button-clear {
-    color: #E8F1F2;
+    color: #f9f9f9;
 }
 
 .whiter {
-    color: #E8F1F2;
+    color: #f9f9f9;
 }
 
 ion-tabs.tabs-color-active-positive .tab-item.tab-item-active,
 ion-tabs.tabs-color-active-positive .tab-item.active,
 ion-tabs.tabs-color-active-positive .tab-item.activated {
-    color: #E8F1F2;
+    color: #f9f9f9;
 }
 
 ion-tabs.tabs-color-active-positive .tab-item {
@@ -87,9 +105,13 @@ ion-tabs.tabs-color-active-positive .tab-item {
 }
 
 body {
-    background-color: #E8F1F2;
+    background-color: #f9f9f9;
 }
 
 .tabs-top.tabs-striped .tab-item {
     background-color: #006494;
+}
+
+.special {
+    background-image: linear-gradient(to bottom, #3ac9f2, #1b98e0);
 }

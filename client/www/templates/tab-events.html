@@ -1,14 +1,14 @@
 <ion-view view-title="Events List">
     <ion-nav-buttons side="right">
-        <a class="button button-icon icon ion-map" ui-sref="tab.events-map" style="color: #E8F1F2;"></a>
+        <a class="button button-icon icon ion-map" ui-sref="tab.events-map" style="color: #f9f9f9;"></a>
         <!--        <a class="ion-ios-customicon" ui-sref="tab.events-map"></a>-->
     </ion-nav-buttons>
     <ion-content class="padding">
         <ion-list show-delete="false" can-swipe="true">
             <ion-item ng-repeat="event in events" ng-click="selection(event)">
                 <p>{{event.title}}</p>
+                <ion-option-button class="button-positive icon ion-star" ng-click="saveToMyList(event)"></ion-option-button>
                 <ion-option-button class="button-positive icon ion-ios-upload-outline" ng-click="share(event)"></ion-option-button>
-                <ion-option-button class="button-positive icon ion-heart" ng-click="saveToMyList(event)"></ion-option-button>
             </ion-item>
         </ion-list>
         <ion-infinite-scroll immediate-check="false" ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" distance="10%"></ion-infinite-scroll>

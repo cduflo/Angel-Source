@@ -1,22 +1,37 @@
 <ion-view view-title="Event Detail">
-    <ion-content class="padding " ng-model="selection ">
-        <div class="list card ">
-            <div class="item item-header item-text-wrap ">
-                <h2 style="padding-bottom: 1em">{{selection.sponsoringOrganizationName}}</h2>
-                <h2 style="padding-bottom: 1em ">{{selection.title}}</h2>
-                <p><strong>Start: </strong>{{selection.startDate}}</p>
-                <p><strong>Finish: </strong>{{selection.endDate}}</p>
-            </div>
-            <div class="item item-body ">
-                <p> <strong>Location: </strong>
-                    <a href ng-click="launchExtMap() ">{{selection.location_name}}</a>
+    <ion-content class="padding" ng-model="selection">
+        <div class="list card">
+            <div class="item item-header item-text-wrap">
+                <p style="padding-bottom: 8px; color:#006494; font-size:20px; margin-left:3px;"> <strong>    {{selection.sponsoringOrganizationName}} </strong>
                 </p>
+                <div class="row" style="padding-bottom:8px;">
+                    <div style="float:left;">
+                        <img src="img/pin.png" style="max-height:2em; margin-top:5px; margin-left:3px;">
+                    </div>
+                    <div style="margin-left:10%;">
+                        <a href ng-click="launchExtMap()" style="font-size:12px;">{{selection.location_name}}</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div style="float:left;">
+                        <img src="img/clock.png" style="max-height:2em; margin-top:5px;">
+                    </div>
+                    <div style="margin-left:10%;">
+                        <p style="color:#006494; font-size:12px;"><strong>Start: </strong>{{selection.startDate}}</p>
+                        <p style="color:#006494; font-size:12px;"><strong>End: </strong>{{selection.endDate}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="item item-body" style="padding-top:5px;">
+
+                <h2>{{selection.title}}</h2>
+
                 <p>{{selection.description}}</p>
                 <p>
                     <a href={{selection.detailUrl}}>More Details & Sign-Up</a>
                 </p>
-                <label class="item item-input ">
-                    <button class="button button-block button-positive " ng-click="deleteFromMyList(selection) ">
+                <label class="item item-input">
+                    <button class="button button-block button-positive" ng-click="deleteFromMyList(selection) ">
                         Delete from <strong>My List</strong>
                     </button>
                 </label>
