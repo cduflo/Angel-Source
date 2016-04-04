@@ -10,7 +10,6 @@
             <ng-map id="map" center="{{lat}},{{lng}}" zoom="11">
                 <marker position="{{lat}},{{lng}}" icon="img/male-2.png" />
                 <marker ng-repeat="record in records" position="{{record.latlong}}" on-click="showInfoWindow(event,record)"></marker>
-                <!--<marker position="record.lat, record.lng" ng-repeat="record in records"/>-->
             </ng-map>
         </div>
     </ion-content>

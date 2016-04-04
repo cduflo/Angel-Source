@@ -108,7 +108,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
     };
 })
 
-.controller('MapCtrl', function ($rootScope, $scope, $state, $localstorage, $volunteer, $network, $compile) {
+.controller('MapCtrl', function ($rootScope, $scope, $state, API, $ionicPopup, $localstorage, $volunteer, $network, $compile) {
     $localstorage.set('counter', 1);
     $scope.records = [];
     var infowindow;
@@ -120,6 +120,17 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
             myParam: {
                 selection: currentRecord
             }
+        })
+    };
+
+    $scope.saveToMyList = function () {
+        choice = currentRecord;
+        choice.userId = $localstorage.get('user.id');
+        API.saveMyList(choice, $localstorage.get('user.id')).success(function (data, status, headers, config) {});
+        infowindow.close();
+        var alertPopup = $ionicPopup.alert({
+            title: "Great news!",
+            template: choice.title + " was added your to My List"
         })
     };
 
@@ -170,11 +181,9 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
         record.lat = latlong[0];
         record.lng = latlong[1];
         var center = new google.maps.LatLng(record.lat, record.lng);
-        //        var infoWindowContent = "<h4>" + record.title + "</h4><p>" + record.description + '</p><a onClick="window.open(\'' + record.detailUrl + '\',\'_system\',\'location=yes\');return false;">More Details & Sign-Up</a><button class="button button-block button-positive" ng-click="$parent.saveToMyList()">Save to <strong>My List</strong> </button>';
-        var infoWindowContent = '<button class="button button-block button-positive" ng-click="goToEventDetail()">' + record.title + '</button>';
+        var infoWindowContent = '<div style="text-align:center; "><h4 style="margin-bottom:0px;">' + record.title + '</h4><a href="" ng-click="goToEventDetail()"><div class="row" style="padding:0px;"><button class="button button-block button-positive" style="float:left; width:120px; min-height: 40px; height: 40px; font-size: 14px; float:left;">Learn More</button></a> <button class="button button-block button-positive" ng-click="saveToMyList(selection)" style="margin:10px; min-height: 40px; height: 40px; padding:0px;  background-color:transparent; color:#1b98e0; width:150px; font-size:14px;"> Save to <strong>My List</strong> </button></div></div>'
         compiled = $compile(infoWindowContent)($scope);
         infowindow.setContent(compiled[0]);
-
         infowindow.setPosition(center);
         infowindow.open($scope.objMapa);
     }
