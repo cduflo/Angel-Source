@@ -21,7 +21,8 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
 })
 
 .controller('EventsCtrl', function ($state, $scope, $localstorage, $volunteer, API, $ionicListDelegate, $ionicLoading, $ionicPopup, $cordovaSocialSharing) {
-    $scope.eventCounter = 21;
+    $scope.eventCounter = 1;
+    $scope.events = [];
     $scope.fetch = function () {
         $volunteer.getEvents(
             $localstorage.getObject('userSettings').location,
@@ -29,11 +30,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
             $localstorage.getObject('userSettings').timeframe,
             $scope.eventCounter
         ).success(function (data, status, headers, config) {
-            if ($scope.eventCounter == 21) {
-                $scope.events = data.items;
-            } else {
-                $scope.events = $scope.events.concat(data.items);
-            }
+            $scope.events = $scope.events.concat(data.items);
             $scope.$broadcast('scroll.infiniteScrollComplete');
         });
     };
@@ -150,7 +147,6 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
             markers.data.items.forEach(function (item) {
                 $scope.records.push(item)
             });
-            console.log($scope.records);
         })
     }
 
@@ -192,7 +188,6 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
 
 
 .controller('MyListCtrl', function ($scope, $state, $localstorage, API, $ionicLoading, $cordovaSocialSharing) {
-    //    if ($localstorage.get('MyList') == "not accessed") {
     $ionicLoading.show({
         content: 'Loading',
         animation: 'fade-in',
@@ -200,7 +195,6 @@ angular.module('starter.controllers', ['ionic', 'ngCordovaOauth', 'ngCordova', '
         maxWidth: 200,
         showDelay: 0
     });
-    //    }
 
     API.getAllMyList($localstorage.get('user.id')).success(function (data, status, headers, config) {
         $scope.events = data;
